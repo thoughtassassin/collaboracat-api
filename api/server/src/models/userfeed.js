@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   UserFeed.associate = function(models) {
-    User.belongsToMany(Feed, { through: UserFeed });
-    Feed.belongsToMany(User, { through: UserFeed });
+    models.Users.belongsToMany(models.Feeds, { through: UserFeed });
+    models.Feeds.belongsToMany(models.Users, { through: UserFeed });
   };
   return UserFeed;
 };

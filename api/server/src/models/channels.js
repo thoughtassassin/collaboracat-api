@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Channels.associate = function(models) {
-    Channels.belongsTo(models.Feed);
+    Channels.belongsTo(models.Feeds);
   };
   return Channels;
 };

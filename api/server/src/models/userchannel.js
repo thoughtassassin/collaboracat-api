@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   UserChannel.associate = function(models) {
-    User.belongsToMany(Channel, { through: UserChannel });
-    Channel.belongsToMany(User, { through: UserChannel });
+    models.Users.belongsToMany(models.Channels, { through: UserChannel });
+    models.Channels.belongsToMany(models.Users, { through: UserChannel });
   };
   return UserChannel;
 };
