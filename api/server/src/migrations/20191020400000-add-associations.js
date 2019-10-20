@@ -1,7 +1,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface
-      .addColumn("Channels", "feedId", {
+      .addColumn("Channels", "FeedId", {
         type: Sequelize.INTEGER,
         references: {
           model: "Feeds",
@@ -12,7 +12,7 @@ module.exports = {
       })
       .then(() => {
         // Contacts belongsTo Channel
-        return queryInterface.addColumn("Contacts", "channelId", {
+        return queryInterface.addColumn("Contacts", "ChannelId", {
           type: Sequelize.INTEGER,
           references: {
             model: "Channels",
@@ -24,7 +24,7 @@ module.exports = {
       })
       .then(() => {
         // Users hasOne Role
-        return queryInterface.addColumn("Users", "roleId", {
+        return queryInterface.addColumn("Users", "RoleId", {
           type: Sequelize.INTEGER,
           references: {
             model: "Roles",
@@ -36,7 +36,7 @@ module.exports = {
       })
       .then(() => {
         // Users hasMany Feeds
-        return queryInterface.addColumn("UserFeeds", "userId", {
+        return queryInterface.addColumn("UserFeeds", "UserId", {
           type: Sequelize.INTEGER,
           references: {
             model: "Users",
@@ -48,7 +48,7 @@ module.exports = {
       })
       .then(() => {
         // Feeds hasMany Users
-        return queryInterface.addColumn("UserFeeds", "feedId", {
+        return queryInterface.addColumn("UserFeeds", "FeedId", {
           type: Sequelize.INTEGER,
           references: {
             model: "Feeds",
@@ -60,7 +60,7 @@ module.exports = {
       })
       .then(() => {
         // Users hasMany Channels
-        return queryInterface.addColumn("UserChannels", "userId", {
+        return queryInterface.addColumn("UserChannels", "UserId", {
           type: Sequelize.INTEGER,
           references: {
             model: "Users",
@@ -72,7 +72,7 @@ module.exports = {
       })
       .then(() => {
         // Channels hasMany Users
-        return queryInterface.addColumn("UserChannels", "channelId", {
+        return queryInterface.addColumn("UserChannels", "ChannelId", {
           type: Sequelize.INTEGER,
           references: {
             model: "Channels",
@@ -88,42 +88,42 @@ module.exports = {
     return queryInterface
       .removeColumn(
         "Channels", // name of Source model
-        "feedId" // key we want to remove
+        "FeedId" // key we want to remove
       )
       .then(() => {
         return queryInterface.removeColumn(
           "Contacts", // name of the Target model
-          "channelId" // key we want to remove
+          "ChannelId" // key we want to remove
         );
       })
       .then(() => {
         return queryInterface.removeColumn(
           "Users", // name of the Target model
-          "roleId" // key we want to remove
+          "RoleId" // key we want to remove
         );
       })
       .then(() => {
         return queryInterface.removeColumn(
           "UserFeeds", // name of the Target model
-          "userId" // key we want to remove
+          "UserId" // key we want to remove
         );
       })
       .then(() => {
         return queryInterface.removeColumn(
           "UserFeeds", // name of the Target model
-          "feedId" // key we want to remove
+          "FeedId" // key we want to remove
         );
       })
       .then(() => {
         return queryInterface.removeColumn(
           "UserChannels", // name of the Target model
-          "userId" // key we want to remove
+          "UserId" // key we want to remove
         );
       })
       .then(() => {
         return queryInterface.removeColumn(
           "UserChannels", // name of the Target model
-          "channelId" // key we want to remove
+          "ChannelId" // key we want to remove
         );
       });
   }
