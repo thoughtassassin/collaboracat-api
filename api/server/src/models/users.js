@@ -10,8 +10,6 @@ module.exports = (sequelize, DataTypes) => {
   );
   Users.associate = function(models) {
     Users.belongsTo(models.Role);
-    Users.hasMany(models.Feeds);
-    Users.hasMany(models.Channels);
   };
   return Users;
 };

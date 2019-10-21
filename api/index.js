@@ -3,6 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import roleRoutes from "./server/routes/RoleRoutes";
 import userRoutes from "./server/routes/UserRoutes";
+import feedRoutes from "./server/routes/FeedRoutes";
 
 config.config();
 
@@ -15,6 +16,7 @@ const port = process.env.PORT || 8000;
 
 app.use("/api/v1/roles", roleRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/feeds", feedRoutes);
 
 // when a random route is inputed
 app.get("*", (req, res) =>
