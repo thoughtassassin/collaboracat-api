@@ -6,6 +6,8 @@ import userRoutes from "./server/routes/UserRoutes";
 import feedRoutes from "./server/routes/FeedRoutes";
 import channelRoutes from "./server/routes/ChannelRoutes";
 import contactRoutes from "./server/routes/ContactRoutes";
+import userFeedRoutes from "./server/routes/UserFeedRoutes";
+import userChannelRoutes from "./server/routes/UserChannelRoutes";
 
 config.config();
 
@@ -21,6 +23,8 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/feeds", feedRoutes);
 app.use("/api/v1/channels", channelRoutes);
 app.use("/api/v1/contacts", contactRoutes);
+app.use("/api/v1/user-feeds", userFeedRoutes);
+app.use("/api/v1/user-channels", userChannelRoutes);
 
 // when a random route is inputed
 app.get("*", (req, res) =>
