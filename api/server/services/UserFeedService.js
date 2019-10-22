@@ -11,7 +11,6 @@ class UserFeedService {
 
   static async addUserFeed(newUserFeed) {
     try {
-      console.log(database);
       return await database.UserFeed.create(newUserFeed);
     } catch (error) {
       throw error;

@@ -11,7 +11,6 @@ class UserChannelService {
 
   static async addUserChannel(newUserChannel) {
     try {
-      console.log(database);
       return await database.UserChannel.create(newUserChannel);
     } catch (error) {
       throw error;
