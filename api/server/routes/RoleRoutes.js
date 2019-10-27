@@ -9,9 +9,25 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   RoleController.getAllRoles
 );
-router.post("/", RoleController.addRole);
-router.get("/:id", RoleController.getARole);
-router.put("/:id", RoleController.updatedRole);
-router.delete("/:id", RoleController.deleteRole);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  RoleController.addRole
+);
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  RoleController.getARole
+);
+router.put(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  RoleController.updatedRole
+);
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  RoleController.deleteRole
+);
 
 export default router;

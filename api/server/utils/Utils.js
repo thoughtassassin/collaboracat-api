@@ -33,7 +33,6 @@ export default class Util {
   }
 
   send(res) {
-    console.log("in util", res);
     const result = {
       status: this.type,
       message: this.message,
@@ -43,7 +42,6 @@ export default class Util {
     if (this.type === "success") {
       return res.status(this.statusCode).json(result);
     }
-    console.log("res is: ", res);
     return res.status(this.statusCode).json({
       status: this.type,
       message: this.message
