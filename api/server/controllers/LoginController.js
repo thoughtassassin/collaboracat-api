@@ -38,7 +38,7 @@ class LoginController {
         }
       });
     } catch (error) {
-      util.setError(404, "uncaught: ", error);
+      util.setError(404, error);
       return util.send(res);
     }
   }

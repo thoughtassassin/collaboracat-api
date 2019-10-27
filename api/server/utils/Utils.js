@@ -6,6 +6,19 @@ export default class Util {
     this.message = null;
   }
 
+  getToken(headers) {
+    if (headers && headers.authorization) {
+      var parted = headers.authorization.split(" ");
+      if (parted.length === 2) {
+        return parted[1];
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
   setSuccess(statusCode, message, data) {
     this.statusCode = statusCode;
     this.message = message;
@@ -20,6 +33,7 @@ export default class Util {
   }
 
   send(res) {
+    console.log("in util", res);
     const result = {
       status: this.type,
       message: this.message,
@@ -29,6 +43,7 @@ export default class Util {
     if (this.type === "success") {
       return res.status(this.statusCode).json(result);
     }
+    console.log("res is: ", res);
     return res.status(this.statusCode).json({
       status: this.type,
       message: this.message
