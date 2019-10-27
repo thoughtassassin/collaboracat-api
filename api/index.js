@@ -1,6 +1,7 @@
 import config from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
+import login from "./server/routes/Login";
 import roleRoutes from "./server/routes/RoleRoutes";
 import userRoutes from "./server/routes/UserRoutes";
 import feedRoutes from "./server/routes/FeedRoutes";
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const port = process.env.PORT || 8000;
 
+app.use("/api/v1/login", login);
 app.use("/api/v1/roles", roleRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/feeds", feedRoutes);
