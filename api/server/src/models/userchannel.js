@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "UserChannel",
     {
       UserId: DataTypes.STRING,
-      ChannellId: DataTypes.STRING
+      ChannelId: DataTypes.STRING
     },
     {}
   );
