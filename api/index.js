@@ -9,11 +9,27 @@ import channelRoutes from "./server/routes/ChannelRoutes";
 import contactRoutes from "./server/routes/ContactRoutes";
 import userFeedRoutes from "./server/routes/UserFeedRoutes";
 import userChannelRoutes from "./server/routes/UserChannelRoutes";
+import cors from "cors";
 
 config.config();
 
 const app = express();
 
+/*
+  var whitelist = ["http://localhost:0000", "http://example2.com"];
+  var corsOptions = {
+  origin: function(origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    }
+  };
+ */
+
+app.use(cors());
+app.options("*", cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
