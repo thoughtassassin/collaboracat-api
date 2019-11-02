@@ -49,7 +49,7 @@ class UserService {
               // This block of code allows you to retrieve the properties of the join table
               model: database.UserFeeds,
               as: "UserFeeds",
-              attributes: ["id", "name"]
+              attributes: ["UserId", "FeedId"]
             }
           },
           {
@@ -57,12 +57,12 @@ class UserService {
             as: "channels",
             required: false,
             // Pass in the Feed attributes that you want to retrieve
-            attributes: ["id", "name"],
+            attributes: ["id", "name", "FeedId"],
             through: {
               // This block of code allows you to retrieve the properties of the join table
               model: database.UserChannels,
               as: "UserChannels",
-              attributes: ["id", "name"]
+              attributes: ["UserId", "ChannelId"]
             }
           }
         ]
