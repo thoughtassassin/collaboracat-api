@@ -16,17 +16,17 @@ router.post(
   UserController.addUser
 );
 router.get(
-  "/:id",
+  "/:username",
   passport.authenticate("jwt", { session: false }),
   UserController.getAUser
 );
 router.put(
-  "/:id",
+  "/:username",
   passport.authenticate("jwt", { session: false }),
   UserController.updatedUser
 );
 router.delete(
-  "/:id",
+  "/:username",
   passport.authenticate("jwt", { session: false }),
   UserController.deleteUser
 );
