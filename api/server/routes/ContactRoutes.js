@@ -30,5 +30,10 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   ContactController.deleteContact
 );
+router.get(
+  "/channel/:channelid",
+  passport.authenticate("jwt", { session: false }),
+  ContactController.getChannelContacts
+);
 
 export default router;
