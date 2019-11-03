@@ -65,6 +65,18 @@ class ContactService {
       throw error;
     }
   }
+
+  static async getChannelContacts(ChannelId) {
+    try {
+      const channelContacts = await database.Contacts.findAll({
+        where: { ChannelId: Number(ChannelId) }
+      });
+
+      return channelContacts;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default ContactService;

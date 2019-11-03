@@ -115,6 +115,32 @@ class ContactController {
       return util.send(res);
     }
   }
+
+  static async getChannelContacts(req, res) {
+    const { channelid } = req.params;
+
+    if (!Number(channelid)) {
+      util.setError(400, "Please input a valid numeric value");
+      return util.send(res);
+    }
+
+    try {
+      const contacts = await ContactService.getChannelContacts(channelid);
+
+      if (!contacts) {
+        util.setError(
+          404,
+          `Cannot find contacts with the channelid ${channelid}`
+        );
+      } else {
+        util.setSuccess(200, "Found Contacts", contacts);
+      }
+      return util.send(res);
+    } catch (error) {
+      util.setError(404, error);
+      return util.send(res);
+    }
+  }
 }
 
 export default ContactController;
