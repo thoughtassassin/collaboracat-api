@@ -65,7 +65,8 @@ class UserService {
               attributes: ["UserId", "ChannelId"]
             }
           }
-        ]
+        ],
+        order: [["channels", "name", "ASC"]]
       });
 
       return theUser;
