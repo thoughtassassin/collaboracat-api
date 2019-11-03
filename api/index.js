@@ -44,7 +44,7 @@ app.use("/api/v1/channels", channelRoutes);
 app.use("/api/v1/contacts", contactRoutes);
 app.use("/api/v1/contacts-channel", contactChannelRoutes);
 app.use("/api/v1/user-feeds", userFeedRoutes);
-app.use(" /api/v1/user-channels", userChannelRoutes);
+app.use("/api/v1/user-channels", userChannelRoutes);
 
 // when a random route is inputed
 app.get("*", (req, res) =>
