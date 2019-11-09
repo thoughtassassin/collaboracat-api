@@ -3,7 +3,9 @@ import database from "../src/models";
 class ChannelService {
   static async getAllChannels() {
     try {
-      return await database.Channels.findAll();
+      return await database.Channels.findAll({
+        order: [["name", "ASC"]]
+      });
     } catch (error) {
       throw error;
     }
