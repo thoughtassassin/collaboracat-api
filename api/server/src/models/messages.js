@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   Messages.associate = function(models) {
     Messages.belongsTo(models.Users);
     Messages.belongsTo(models.Channels);
+    Messages.hasMany(models.Comments);
   };
   return Messages;
 };
