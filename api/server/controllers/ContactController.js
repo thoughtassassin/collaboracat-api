@@ -1,6 +1,5 @@
 import ContactService from "../services/ContactService";
 import Util from "../utils/Utils";
-import { read } from "fs";
 
 const util = new Util();
 
