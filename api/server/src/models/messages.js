@@ -9,21 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Messages.associate = function(models) {
     Messages.belongsTo(models.Users);
-    ("use strict");
-    module.exports = (sequelize, DataTypes) => {
-      const Messages = sequelize.define(
-        "Messages",
-        {
-          content: DataTypes.STRING
-        },
-        {}
-      );
-      Messages.associate = function(models) {
-        Messages.belongsTo(models.Users);
-        Messages.belongsTo(models.Channels);
-      };
-      return Messages;
-    };
+    Messages.belongsTo(models.Channels);
   };
   return Messages;
 };
