@@ -69,7 +69,16 @@ class MessageService {
   static async getChannelMessages(ChannelId) {
     try {
       const channelMessages = await database.Messages.findAll({
-        where: { ChannelId: Number(ChannelId) }
+        where: { ChannelId: Number(ChannelId) },
+        include: [
+          {
+            model: database.Users,
+            attributes: ["username"]
+          },
+          {
+            model: database.Comments
+          }
+        ]
       });
 
       return channelMessages;
