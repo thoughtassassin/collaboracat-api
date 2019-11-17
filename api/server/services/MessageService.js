@@ -98,9 +98,12 @@ class MessageService {
         attributes: {
           include: [
             [
-              database.sequelize.fn(
-                "count",
-                database.sequelize.col("Comments.id")
+              database.sequelize.cast(
+                database.sequelize.fn(
+                  "count",
+                  database.sequelize.col("Comments.id")
+                ),
+                "int"
               ),
               "comments"
             ]
