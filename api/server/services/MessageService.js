@@ -49,6 +49,10 @@ class MessageService {
                 attributes: ["username"]
               }
             ]
+          },
+          {
+            model: database.Users,
+            attributes: ["username"]
           }
         ]
       });
