@@ -77,6 +77,10 @@ class MessageService {
           },
           {
             model: database.Comments
+          },
+          {
+            model: database.Channels,
+            attributes: ["name"]
           }
         ],
         order: [["createdAt", "DESC"]]
