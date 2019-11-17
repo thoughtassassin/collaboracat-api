@@ -39,7 +39,18 @@ class MessageService {
   static async getAMessage(id) {
     try {
       const theMessage = await database.Messages.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
+        include: [
+          {
+            model: database.Comments,
+            include: [
+              {
+                model: database.Users,
+                attributes: ["username"]
+              }
+            ]
+          }
+        ]
       });
 
       return theMessage;
