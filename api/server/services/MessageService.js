@@ -39,7 +39,18 @@ class MessageService {
   static async getAMessage(id) {
     try {
       const theMessage = await database.Messages.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
+        include: [
+          {
+            model: database.Comments,
+            include: [
+              {
+                model: database.Users,
+                attributes: ["username"]
+              }
+            ]
+          }
+        ]
       });
 
       return theMessage;
@@ -77,18 +88,28 @@ class MessageService {
           },
           {
             model: database.Comments,
-            include: [
-              {
-                model: database.Users,
-                attributes: ["username"]
-              }
-            ]
+            attributes: []
           },
           {
             model: database.Channels,
             attributes: ["name"]
           }
         ],
+        attributes: {
+          include: [
+            [
+              database.sequelize.cast(
+                database.sequelize.fn(
+                  "count",
+                  database.sequelize.col("Comments.id")
+                ),
+                "int"
+              ),
+              "comments"
+            ]
+          ]
+        },
+        group: ["Messages.id", "User.id", "Channel.id", "Comments.id"],
         order: [["createdAt", "DESC"]]
       });
 
