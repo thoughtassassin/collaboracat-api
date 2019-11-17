@@ -78,7 +78,8 @@ class MessageService {
           {
             model: database.Comments
           }
-        ]
+        ],
+        order: [["createdAt", "DESC"]]
       });
 
       return channelMessages;
