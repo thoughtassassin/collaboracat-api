@@ -76,7 +76,13 @@ class MessageService {
             attributes: ["username"]
           },
           {
-            model: database.Comments
+            model: database.Comments,
+            include: [
+              {
+                model: database.Users,
+                attributes: ["username"]
+              }
+            ]
           },
           {
             model: database.Channels,
