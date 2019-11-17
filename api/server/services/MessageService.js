@@ -88,18 +88,25 @@ class MessageService {
           },
           {
             model: database.Comments,
-            include: [
-              {
-                model: database.Users,
-                attributes: ["username"]
-              }
-            ]
+            attributes: []
           },
           {
             model: database.Channels,
             attributes: ["name"]
           }
         ],
+        attributes: {
+          include: [
+            [
+              database.sequelize.fn(
+                "count",
+                database.sequelize.col("Comments.id")
+              ),
+              "comments"
+            ]
+          ]
+        },
+        group: ["Messages.id", "User.id", "Channel.id", "Comments.id"],
         order: [["createdAt", "DESC"]]
       });
 
