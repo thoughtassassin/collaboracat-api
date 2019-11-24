@@ -107,6 +107,40 @@ class MessageService {
       throw error;
     }
   }
+
+  static async getUserMessages(username) {
+    const query = `SELECT 
+          "Messages".*, 
+          "Users"."username",
+	        COUNT("Comments"."id") AS "CommentCount" 
+        FROM 
+	        "Messages"
+	        JOIN "Users" ON "Messages"."UserId" = "Users"."id"
+	        LEFT OUTER JOIN "Comments" ON "Messages"."id" = "Comments"."MessageId"
+        WHERE 
+	        "Messages"."ChannelId" IN (
+		        SELECT 
+			        "ChannelId" 
+		        FROM 
+			        "Users" 
+			      JOIN "UserChannels" ON "Users"."id" = "UserChannels"."UserId" 
+		        WHERE 
+			        "username" = '${username}'
+	        )
+        GROUP BY 
+	        "Messages"."id",
+	        "Users"."username"
+        ORDER BY "Messages"."createdAt" DESC`;
+    try {
+      const userMessages = await database.sequelize.query(query, {
+        type: database.sequelize.QueryTypes.SELECT
+      });
+
+      return userMessages;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default MessageService;
