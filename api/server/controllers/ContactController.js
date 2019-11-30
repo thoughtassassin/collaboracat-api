@@ -23,7 +23,8 @@ class ContactController {
     if (
       !req.body.firstName ||
       !req.body.lastName ||
-      !req.body.business ||
+      !req.body.group ||
+      !req.body.position ||
       !req.body.phone ||
       !req.body.address1 ||
       !req.body.city ||
