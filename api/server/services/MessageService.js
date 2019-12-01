@@ -42,6 +42,10 @@ class MessageService {
         where: { id: Number(id) },
         include: [
           {
+            model: database.Channels,
+            attributes: ["name"]
+          },
+          {
             model: database.Comments,
             include: [
               {
