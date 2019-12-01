@@ -112,24 +112,28 @@ class MessageService {
     const query = `SELECT 
           "Messages".*, 
           "Users"."username",
+          "Channels"."name" as "channelName",
 	        COUNT("Comments"."id") AS "CommentCount" 
         FROM 
 	        "Messages"
 	        JOIN "Users" ON "Messages"."UserId" = "Users"."id"
 	        LEFT OUTER JOIN "Comments" ON "Messages"."id" = "Comments"."MessageId"
+	        LEFT OUTER JOIN "Channels" ON "Messages"."ChannelId" = "Channels"."id"
         WHERE 
 	        "Messages"."ChannelId" IN (
 		        SELECT 
-			        "ChannelId" 
+			        "ChannelId"
 		        FROM 
 			        "Users" 
-			      JOIN "UserChannels" ON "Users"."id" = "UserChannels"."UserId" 
+			      JOIN "UserChannels" ON "Users"."id" = "UserChannels"."UserId"
+			      JOIN "Channels" ON "UserChannels"."ChannelId" = "Channels"."id" 
 		        WHERE 
 			        "username" = '${username}'
 	        )
         GROUP BY 
 	        "Messages"."id",
-	        "Users"."username"
+	        "Users"."username",
+	        "Channels"."name"
         ORDER BY "Messages"."createdAt" DESC`;
     try {
       const userMessages = await database.sequelize.query(query, {
