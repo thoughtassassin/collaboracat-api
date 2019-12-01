@@ -23,12 +23,7 @@ class ContactController {
     if (
       !req.body.firstName ||
       !req.body.lastName ||
-      !req.body.position ||
-      !req.body.phone ||
-      !req.body.address1 ||
-      !req.body.city ||
-      !req.body.state ||
-      !req.body.zip ||
+      (!req.body.phone && !req.body.email) ||
       !req.body.ChannelId
     ) {
       util.setError(400, "Please provide complete details");
