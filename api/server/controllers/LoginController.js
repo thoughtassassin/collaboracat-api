@@ -6,23 +6,28 @@ const util = new Util();
 
 class LoginController {
   static async login(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
-      util.setError(400, "Username and password are required");
+    if (!email || !password) {
+      util.setError(400, "Email and password are required");
       return util.send(res);
     }
 
     try {
-      const user = await LoginService.login(username);
+      const user = await LoginService.login(email);
       if (!user) {
         util.setError(404, `User not found.`);
         return util.send(res);
       }
       user.comparePassword(password, (err, isMatch) => {
         if (isMatch && !err) {
+          const loggedInUser = {
+            username: user.dataValues.username,
+            email: user.dataValues.email,
+            Role: { role: user.dataValues.Role.role }
+          };
           var token = jwt.sign(
-            JSON.parse(JSON.stringify(user)),
+            JSON.parse(JSON.stringify(loggedInUser)),
             "nodeauthsecret",
             { expiresIn: 86400 * 30 }
           );

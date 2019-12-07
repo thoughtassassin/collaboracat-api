@@ -1,10 +1,10 @@
 import database from "../src/models";
 
 class LoginService {
-  static async login(username) {
+  static async login(email) {
     try {
       return await database.Users.findOne({
-        where: { username: username },
+        where: { email: email },
         include: [
           {
             model: database.Role,
@@ -16,6 +16,7 @@ class LoginService {
         ]
       });
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
