@@ -22,6 +22,7 @@ class LoginController {
       user.comparePassword(password, (err, isMatch) => {
         if (isMatch && !err) {
           const loggedInUser = {
+            id: user.dataValues.id,
             username: user.dataValues.username,
             email: user.dataValues.email,
             Role: { role: user.dataValues.Role.role }
