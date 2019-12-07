@@ -50,13 +50,25 @@ class MessageService {
             include: [
               {
                 model: database.Users,
-                attributes: ["username"]
+                attributes: ["username"],
+                include: [
+                  {
+                    model: database.Warehouse,
+                    attributes: ["name"]
+                  }
+                ]
               }
             ]
           },
           {
             model: database.Users,
-            attributes: ["username"]
+            attributes: ["username"],
+            include: [
+              {
+                model: database.Warehouse,
+                attributes: ["name"]
+              }
+            ]
           }
         ]
       });
@@ -92,7 +104,13 @@ class MessageService {
         include: [
           {
             model: database.Users,
-            attributes: ["username"]
+            attributes: ["username"],
+            include: [
+              {
+                model: database.Warehouse,
+                attributes: ["name"]
+              }
+            ]
           },
           {
             model: database.Comments,
@@ -114,14 +132,17 @@ class MessageService {
 
   static async getUserMessages(email) {
     const query = `SELECT 
-          "Messages".*, 
-          "Users"."email",
+          "Messages".*,
+          "Users"."username",
+          "Users"."WarehouseId",
+          "Warehouses"."name" as "warehouseName",
           "Channels"."name" as "channelName",
 	        COUNT("Comments"."id") AS "CommentCount" 
         FROM 
 	        "Messages"
-	        JOIN "Users" ON "Messages"."UserId" = "Users"."id"
-	        LEFT OUTER JOIN "Comments" ON "Messages"."id" = "Comments"."MessageId"
+          JOIN "Users" ON "Messages"."UserId" = "Users"."id"
+          LEFT OUTER JOIN "Warehouses" ON "Warehouses"."id" = "Users"."WarehouseId"
+          LEFT OUTER JOIN "Comments" ON "Messages"."id" = "Comments"."MessageId"
 	        LEFT OUTER JOIN "Channels" ON "Messages"."ChannelId" = "Channels"."id"
         WHERE 
 	        "Messages"."ChannelId" IN (
@@ -136,7 +157,9 @@ class MessageService {
 	        )
         GROUP BY 
 	        "Messages"."id",
-	        "Users"."email",
+          "Users"."username",
+          "Users"."WarehouseId",
+          "Warehouses"."name",
 	        "Channels"."name"
         ORDER BY "Messages"."createdAt" DESC`;
     try {

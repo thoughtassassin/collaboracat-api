@@ -44,6 +44,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId",
       otherKey: "ChannelId"
     });
+    Users.belongsTo(models.Warehouse);
+    Users.belongsTo(models.Provider);
   };
   return Users;
 };
