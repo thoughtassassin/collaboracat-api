@@ -34,10 +34,10 @@ class UserService {
     }
   }
 
-  static async getAUser(username) {
+  static async getAUser(email) {
     try {
       const theUser = await database.Users.findOne({
-        where: { username: username },
+        where: { email: email },
         include: [
           {
             model: database.Feeds,
