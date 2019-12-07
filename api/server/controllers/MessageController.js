@@ -132,21 +132,18 @@ class MessageController {
   }
 
   static async getUserMessages(req, res) {
-    const { username } = req.params;
+    const { email } = req.params;
 
-    if (!username) {
-      util.setError(400, "Please input a valid username");
+    if (!email) {
+      util.setError(400, "Please input a valid email");
       return util.send(res);
     }
 
     try {
-      const Messages = await MessageService.getUserMessages(username);
+      const Messages = await MessageService.getUserMessages(email);
 
       if (!Messages) {
-        util.setError(
-          404,
-          `Cannot find Messages with the username ${username}`
-        );
+        util.setError(404, `Cannot find Messages with the username ${email}`);
       } else {
         util.setSuccess(200, "Found Messages", Messages);
       }

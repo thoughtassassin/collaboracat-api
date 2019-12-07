@@ -6,7 +6,7 @@ import "../src/config/passport";
 const router = Router();
 
 router.get(
-  "/:username",
+  "/:email",
   passport.authenticate("jwt", { session: false }),
   MessageController.getUserMessages
 );

@@ -112,10 +112,10 @@ class MessageService {
     }
   }
 
-  static async getUserMessages(username) {
+  static async getUserMessages(email) {
     const query = `SELECT 
           "Messages".*, 
-          "Users"."username",
+          "Users"."email",
           "Channels"."name" as "channelName",
 	        COUNT("Comments"."id") AS "CommentCount" 
         FROM 
@@ -132,11 +132,11 @@ class MessageService {
 			      JOIN "UserChannels" ON "Users"."id" = "UserChannels"."UserId"
 			      JOIN "Channels" ON "UserChannels"."ChannelId" = "Channels"."id" 
 		        WHERE 
-			        "username" = '${username}'
+			        "email" = '${email}'
 	        )
         GROUP BY 
 	        "Messages"."id",
-	        "Users"."username",
+	        "Users"."email",
 	        "Channels"."name"
         ORDER BY "Messages"."createdAt" DESC`;
     try {
