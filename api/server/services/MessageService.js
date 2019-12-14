@@ -4,6 +4,26 @@ class MessageService {
   static async getAllMessages() {
     try {
       return await database.Messages.findAll({
+        include: [
+          {
+            model: database.Users,
+            attributes: ["username"],
+            include: [
+              {
+                model: database.Warehouse,
+                attributes: ["name"]
+              }
+            ]
+          },
+          {
+            model: database.Comments,
+            attributes: ["id"]
+          },
+          {
+            model: database.Channels,
+            attributes: ["name"]
+          }
+        ],
         order: [["createdAt", "DESC"]]
       });
     } catch (error) {

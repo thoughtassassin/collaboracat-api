@@ -3,7 +3,9 @@ import database from "../src/models";
 class UserService {
   static async getAllUsers() {
     try {
-      return await database.Users.findAll({});
+      return await database.Users.findAll({
+        order: [["username", "ASC"]]
+      });
     } catch (error) {
       throw error;
     }
