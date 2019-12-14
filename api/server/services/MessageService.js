@@ -3,7 +3,9 @@ import database from "../src/models";
 class MessageService {
   static async getAllMessages() {
     try {
-      return await database.Messages.findAll();
+      return await database.Messages.findAll({
+        order: [["createdAt", "DESC"]]
+      });
     } catch (error) {
       throw error;
     }
@@ -92,6 +94,39 @@ class MessageService {
         return deletedMessage;
       }
       return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getMessagesByUser(userId) {
+    try {
+      const messagesByUser = await database.Messages.findAll({
+        where: { UserId: Number(userId) },
+        include: [
+          {
+            model: database.Users,
+            attributes: ["username"],
+            include: [
+              {
+                model: database.Warehouse,
+                attributes: ["name"]
+              }
+            ]
+          },
+          {
+            model: database.Comments,
+            attributes: ["id"]
+          },
+          {
+            model: database.Channels,
+            attributes: ["name"]
+          }
+        ],
+        order: [["createdAt", "DESC"]]
+      });
+
+      return messagesByUser;
     } catch (error) {
       throw error;
     }
