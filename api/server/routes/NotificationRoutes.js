@@ -29,5 +29,15 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   NotificationController.deleteNotification
 );
+router.get(
+  "/admin/:userId",
+  passport.authenticate("jwt", { session: false }),
+  NotificationController.getAdminNotifications
+);
+router.get(
+  "/user/:userId",
+  passport.authenticate("jwt", { session: false }),
+  NotificationController.getUserNotifications
+);
 
 export default router;

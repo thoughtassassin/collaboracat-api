@@ -56,8 +56,8 @@ app.use("/api/v1/messages-by-user", messagesByUserRoutes);
 app.use("/api/v1/messages", messageRoutes);
 app.use("/api/v1/message-comments", messageCommentsRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
-app.use("/api/v1/user-feeds", userFeedRoutes);
 app.use("/api/v1/user-channels", userChannelRoutes);
+app.use("/api/v1/user-feeds", userFeedRoutes);
 app.use("/api/v1/user-messages", userMessagesRoutes);
 
 // when a random route is inputed

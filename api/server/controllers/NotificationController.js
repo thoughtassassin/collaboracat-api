@@ -19,6 +19,56 @@ class NotificationController {
     }
   }
 
+  static async getAdminNotifications(req, res) {
+    const { userId } = req.params;
+
+    if (!Number(userId)) {
+      util.setError(400, "Please input a valid user id");
+      return util.send(res);
+    }
+
+    try {
+      const notifications = await NotificationService.getAdminNotifications(
+        userId
+      );
+
+      if (!notifications) {
+        util.setError(404, `Cannot find Notifications with the id ${userId}`);
+      } else {
+        util.setSuccess(200, "Found Notifications", notifications);
+      }
+      return util.send(res);
+    } catch (error) {
+      util.setError(404, error);
+      return util.send(res);
+    }
+  }
+
+  static async getUserNotifications(req, res) {
+    const { userId } = req.params;
+
+    if (!Number(userId)) {
+      util.setError(400, "Please input a valid user id");
+      return util.send(res);
+    }
+
+    try {
+      const notifications = await NotificationService.getUserNotifications(
+        userId
+      );
+
+      if (!notifications) {
+        util.setError(404, `Cannot find Notifications with the id ${userId}`);
+      } else {
+        util.setSuccess(200, "Found Notifications", notifications);
+      }
+      return util.send(res);
+    } catch (error) {
+      util.setError(404, error);
+      return util.send(res);
+    }
+  }
+
   static async addNotification(req, res) {
     if (!req.body.type | !req.body.UserId | !req.body.ChannelId) {
       util.setError(400, "Please provide complete details");

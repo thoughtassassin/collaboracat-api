@@ -1,7 +1,9 @@
 import MessageService from "../services/MessageService";
+import sgMail from "@sendgrid/mail";
 import Util from "../utils/Utils";
 
 const util = new Util();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class MessageController {
   static async getAllMessages(req, res) {
@@ -28,6 +30,16 @@ class MessageController {
     try {
       const createdMessage = await MessageService.addMessage(newMessage);
       util.setSuccess(201, "Message Added!", createdMessage);
+      const notifiedUsers = await MessageService.getNotifiedUsers(
+        req.body.ChannelId
+      );
+      const msg = {
+        to: notifiedUsers,
+        from: "notifications@collaboracast.com",
+        subject: "New Message",
+        text: req.body.content
+      };
+      sgMail.send(msg);
       return util.send(res);
     } catch (error) {
       util.setError(400, error.message);

@@ -227,6 +227,29 @@ class MessageService {
       throw error;
     }
   }
+
+  static async getNotifiedUsers(channelId) {
+    const query = `SELECT
+	                  "Users"."phone",
+	                  "Providers"."domain"
+                  FROM 
+                    "Notifications"
+                  JOIN "Users" ON "Notifications"."UserId" = "Users"."id"
+                  JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
+                  WHERE 
+                    "Notifications"."ChannelId" = ${channelId}`;
+    try {
+      const messageNotifications = await database.sequelize.query(query, {
+        type: database.sequelize.QueryTypes.SELECT
+      });
+      return messageNotifications.map(
+        notification =>
+          notification.phone.replace(/-/g, "") + "@" + notification.domain
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default MessageService;

@@ -9,6 +9,49 @@ class NotificationService {
     }
   }
 
+  static async getAdminNotifications(userId) {
+    const query = `SELECT
+        "Channels"."id" AS "id", 
+        "Channels"."name",
+        "Notifications"."type",
+        "Notifications"."id" AS "notificationId"
+        FROM "Channels"
+        LEFT JOIN "Notifications" ON "Notifications"."ChannelId" = "Channels"."id" 
+  	        AND "Notifications"."UserId" = ${userId}
+        ORDER BY "Channels"."name" ASC`;
+    try {
+      const adminNotifications = await database.sequelize.query(query, {
+        type: database.sequelize.QueryTypes.SELECT
+      });
+
+      return adminNotifications;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getUserNotifications(userId) {
+    const query = `SELECT
+        "Channels"."id" AS "id", 
+        "Channels"."name",
+        "Notifications"."type",
+        "Notifications"."id" AS "notificationId"
+        FROM "Channels"
+        JOIN "UserChannels" ON "UserChannels"."ChannelId" = "Channels"."id" AND "UserChannels"."UserId" = ${userId}
+        LEFT JOIN "Notifications" ON "Notifications"."ChannelId" = "Channels"."id" 
+  	        AND "Notifications"."UserId" = ${userId}
+        ORDER BY "Channels"."name" ASC`;
+    try {
+      const adminNotifications = await database.sequelize.query(query, {
+        type: database.sequelize.QueryTypes.SELECT
+      });
+
+      return adminNotifications;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async addNotification(newNotification) {
     try {
       return await database.Notification.create(newNotification);
