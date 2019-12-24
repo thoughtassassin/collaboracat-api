@@ -38,7 +38,7 @@ class MessageController {
           to: notifiedUsers,
           from: "notifications@collaboracast.com",
           subject: "New Message",
-          text: req.body.content
+          html: req.body.content
         };
         sgMail.send(msg);
       }
