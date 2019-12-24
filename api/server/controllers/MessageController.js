@@ -33,13 +33,15 @@ class MessageController {
       const notifiedUsers = await MessageService.getNotifiedUsers(
         req.body.ChannelId
       );
-      const msg = {
-        to: notifiedUsers,
-        from: "notifications@collaboracast.com",
-        subject: "New Message",
-        text: req.body.content
-      };
-      sgMail.send(msg);
+      if (notifiedUsers.length > 0) {
+        const msg = {
+          to: notifiedUsers,
+          from: "notifications@collaboracast.com",
+          subject: "New Message",
+          text: req.body.content
+        };
+        sgMail.send(msg);
+      }
       return util.send(res);
     } catch (error) {
       util.setError(400, error.message);

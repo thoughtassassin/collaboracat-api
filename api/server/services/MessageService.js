@@ -242,10 +242,14 @@ class MessageService {
       const messageNotifications = await database.sequelize.query(query, {
         type: database.sequelize.QueryTypes.SELECT
       });
-      return messageNotifications.map(
-        notification =>
-          notification.phone.replace(/-/g, "") + "@" + notification.domain
-      );
+      return messageNotifications.reduce((notifications, notification) => {
+        if (notification.phone && notification.domain) {
+          notifications.push(
+            notification.phone.replace(/-/g, "") + "@" + notification.domain
+          );
+        }
+        return notifications;
+      }, []);
     } catch (error) {
       throw error;
     }
