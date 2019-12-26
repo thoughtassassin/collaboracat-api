@@ -1,4 +1,5 @@
 import MessageService from "../services/MessageService";
+import ChannelService from "../services/ChannelService";
 import sgMail from "@sendgrid/mail";
 import Util from "../utils/Utils";
 
@@ -30,14 +31,22 @@ class MessageController {
     try {
       const createdMessage = await MessageService.addMessage(newMessage);
       util.setSuccess(201, "Message Added!", createdMessage);
-      const notifiedUsers = await MessageService.getNotifiedUsers(
+      // get notified users
+      let notifiedUsers = await MessageService.getNotifiedUsers(
         req.body.ChannelId
       );
+      if (!req.body.priority) {
+        notifiedUsers = notifiedUsers.filter(
+          notifiedUser => notifiedUser.type !== "priority"
+        );
+      }
+      //get channel name for notification
+      const channel = await ChannelService.getAChannel(req.body.ChannelId);
       if (notifiedUsers.length > 0) {
         const msg = {
-          to: notifiedUsers,
+          to: notifiedUsers.map(notification => notification.recipient),
           from: "notifications@collaboracast.com",
-          subject: "New Message",
+          subject: channel.name,
           html: req.body.content
         };
         sgMail.send(msg);

@@ -231,7 +231,8 @@ class MessageService {
   static async getNotifiedUsers(channelId) {
     const query = `SELECT
 	                  "Users"."phone",
-	                  "Providers"."domain"
+                    "Providers"."domain",
+                    "Notifications"."type"
                   FROM 
                     "Notifications"
                   JOIN "Users" ON "Notifications"."UserId" = "Users"."id"
@@ -244,9 +245,11 @@ class MessageService {
       });
       return messageNotifications.reduce((notifications, notification) => {
         if (notification.phone && notification.domain) {
-          notifications.push(
-            notification.phone.replace(/-/g, "") + "@" + notification.domain
-          );
+          notifications.push({
+            recipient:
+              notification.phone.replace(/-/g, "") + "@" + notification.domain,
+            type: notification.type
+          });
         }
         return notifications;
       }, []);
