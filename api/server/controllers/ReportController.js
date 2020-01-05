@@ -9,10 +9,11 @@ class ReportController {
     const { beginDate, endDate } = req.body;
     const { userid } = req.params;
 
-    // if (!beginDate && !endDate) {
-    //   util.setError(400, "Please input a begin and end date");
-    //   return util.send(res);
-    // }
+    if (!beginDate || !endDate) {
+      util.setError(400, "Please input a begin and end date");
+      return util.send(res);
+    }
+
     try {
       const Report = await ReportService.getUserReport(
         userid,
@@ -27,7 +28,6 @@ class ReportController {
           Message: report.content
         }));
 
-        //util.setSuccess(200, "Report retrieved", Report);
         let workbook = new excel.Workbook(); //creating workbook
         let worksheet = workbook.addWorksheet("Messages"); //creating worksheet
 
@@ -67,10 +67,11 @@ class ReportController {
     const { beginDate, endDate } = req.body;
     const { channelid } = req.params;
 
-    // if (!beginDate && !endDate) {
-    //   util.setError(400, "Please input a begin and end date");
-    //   return util.send(res);
-    // }
+    if (!beginDate || !endDate) {
+      util.setError(400, "Please input a begin and end date");
+      return util.send(res);
+    }
+
     try {
       const Report = await ReportService.getChannelReport(
         channelid,
@@ -85,7 +86,6 @@ class ReportController {
           Message: report.content
         }));
 
-        //util.setSuccess(200, "Report retrieved", Report);
         let workbook = new excel.Workbook(); //creating workbook
         let worksheet = workbook.addWorksheet("Messages"); //creating worksheet
 
