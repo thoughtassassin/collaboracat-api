@@ -14,7 +14,7 @@ import messagesByUserRoutes from "./server/routes/messagesByUserRoutes";
 import messageRoutes from "./server/routes/MessageRoutes";
 import messageCommentsRoutes from "./server/routes/MessageCommentsRoutes";
 import notificationRoutes from "./server/routes/NotificationRoutes";
-import reportRoutes from "./server/routes/reportRoutes";
+import reportRoutes from "./server/routes/ReportRoutes";
 import userFeedRoutes from "./server/routes/UserFeedRoutes";
 import userChannelRoutes from "./server/routes/UserChannelRoutes";
 import userMessagesRoutes from "./server/routes/UserMessagesRoutes";
