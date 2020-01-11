@@ -10,8 +10,11 @@ import channelContactsRoutes from "./server/routes/ChannelContactsRoutes";
 import channelMessagesRoutes from "./server/routes/ChannelMessagesRoutes";
 import commentRoutes from "./server/routes/CommentRoutes";
 import contactRoutes from "./server/routes/ContactRoutes";
+import messagesByUserRoutes from "./server/routes/messagesByUserRoutes";
 import messageRoutes from "./server/routes/MessageRoutes";
 import messageCommentsRoutes from "./server/routes/MessageCommentsRoutes";
+import notificationRoutes from "./server/routes/NotificationRoutes";
+import reportRoutes from "./server/routes/ReportRoutes";
 import userFeedRoutes from "./server/routes/UserFeedRoutes";
 import userChannelRoutes from "./server/routes/UserChannelRoutes";
 import userMessagesRoutes from "./server/routes/UserMessagesRoutes";
@@ -50,10 +53,13 @@ app.use("/api/v1/channel-messages", channelMessagesRoutes);
 app.use("/api/v1/channel-contacts", channelContactsRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/contacts", contactRoutes);
+app.use("/api/v1/messages-by-user", messagesByUserRoutes);
 app.use("/api/v1/messages", messageRoutes);
 app.use("/api/v1/message-comments", messageCommentsRoutes);
-app.use("/api/v1/user-feeds", userFeedRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/v1/reports", reportRoutes);
 app.use("/api/v1/user-channels", userChannelRoutes);
+app.use("/api/v1/user-feeds", userFeedRoutes);
 app.use("/api/v1/user-messages", userMessagesRoutes);
 
 // when a random route is inputed

@@ -14,7 +14,10 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
-      business: {
+      group: {
+        type: Sequelize.STRING
+      },
+      position: {
         type: Sequelize.STRING
       },
       phone: {

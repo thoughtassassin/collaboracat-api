@@ -6,9 +6,9 @@ import "../src/config/passport";
 const router = Router();
 
 router.get(
-  "/:email",
+  "/:userId",
   passport.authenticate("jwt", { session: false }),
-  MessageController.getUserMessages
+  MessageController.getMessagesByUser
 );
 
 export default router;

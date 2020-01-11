@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     "Users",
     {
       username: DataTypes.STRING,
-      password: DataTypes.STRING
+      password: DataTypes.STRING,
+      phone: DataTypes.STRING,
+      email: DataTypes.STRING
     },
     {}
   );
@@ -42,6 +44,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId",
       otherKey: "ChannelId"
     });
+    Users.belongsTo(models.Warehouse);
+    Users.belongsTo(models.Provider);
   };
   return Users;
 };

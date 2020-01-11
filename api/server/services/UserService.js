@@ -3,7 +3,9 @@ import database from "../src/models";
 class UserService {
   static async getAllUsers() {
     try {
-      return await database.Users.findAll({});
+      return await database.Users.findAll({
+        order: [["username", "ASC"]]
+      });
     } catch (error) {
       throw error;
     }
@@ -34,10 +36,10 @@ class UserService {
     }
   }
 
-  static async getAUser(username) {
+  static async getAUser(email) {
     try {
       const theUser = await database.Users.findOne({
-        where: { username: username },
+        where: { email: email },
         include: [
           {
             model: database.Feeds,
