@@ -24,8 +24,8 @@ class RequestChannelController {
         sgMail.send(msg);
         util.setSuccess(
           200,
-          "Admin Users retrieved and email seent",
-          adminUsers
+          "Request for channel is successful.",
+          adminUsers.data
         );
       } else {
         util.setSuccess(200, "No Admin Users found");
