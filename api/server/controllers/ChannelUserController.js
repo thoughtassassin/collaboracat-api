@@ -7,8 +7,6 @@ class ChannelUserController {
   static async getChannelUsers(req, res) {
     const { channelid } = req.params;
 
-    console.log(channelid);
-
     if (!Number(channelid)) {
       util.setError(400, "Please input a valid numeric value");
       return util.send(res);
