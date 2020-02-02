@@ -17,6 +17,7 @@ import messageCommentsRoutes from "./server/routes/MessageCommentsRoutes";
 import notificationRoutes from "./server/routes/NotificationRoutes";
 import reportRoutes from "./server/routes/ReportRoutes";
 import requestChannelRoutes from "./server/routes/RequestChannelRoutes";
+import resetPasswordRoutes from "./server/routes/ResetPasswordRoutes";
 import userFeedRoutes from "./server/routes/UserFeedRoutes";
 import userChannelRoutes from "./server/routes/UserChannelRoutes";
 import userMessagesRoutes from "./server/routes/UserMessagesRoutes";
@@ -27,13 +28,13 @@ config.config();
 const app = express();
 
 // Force https
-app.enable("trust proxy"); //needed if you're behind a load balancer
-app.use(function(req, res, next) {
-  if (req.secure) {
-    return next();
-  }
-  res.redirect("https://" + req.headers.host + req.url);
-});
+// app.enable("trust proxy"); //needed if you're behind a load balancer
+// app.use(function(req, res, next) {
+//   if (req.secure) {
+//     return next();
+//   }
+//   res.redirect("https://" + req.headers.host + req.url);
+// });
 
 /*
   var whitelist = ["http://localhost:0000", "http://example2.com"];
@@ -70,6 +71,7 @@ app.use("/api/v1/messages", messageRoutes);
 app.use("/api/v1/message-comments", messageCommentsRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/reports", reportRoutes);
+app.use("/api/v1/reset-password", resetPasswordRoutes);
 app.use("/api/v1/request-channel", requestChannelRoutes);
 app.use("/api/v1/user-channels", userChannelRoutes);
 app.use("/api/v1/user-feeds", userFeedRoutes);

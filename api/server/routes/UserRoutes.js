@@ -21,7 +21,7 @@ router.get(
   UserController.getAUser
 );
 router.put(
-  "/:username",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
   UserController.updatedUser
 );
