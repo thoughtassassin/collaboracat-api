@@ -38,16 +38,24 @@ class ResetPasswordController {
           to: user.email,
           from: "reset-password@collaboracast.com",
           subject: "Reset Password",
-          html: `<p>A request to reset your password has been made. To reset your password, <a href="${url}/resetpassword?token=${token}">click here</a></p>`
+          html: `<p>A request to reset your password has been made. To reset your password, <a href="${url}/reset-password?email=${email}&token=${token}">click here</a></p>`
         };
         sgMail.send(msg);
         util.setSuccess(
           200,
-          "Request for password reset is successful.",
+          "Request for password reset is successful. Please check your email.",
           userWithResetToken
         );
       } else {
-        util.setSuccess(200, "Password reset was unsuccessful");
+        let errorMessage;
+        if (!user) {
+          errorMessage = "User not found.";
+        } else if (!authorizedURLs.includes(url)) {
+          errorMessage = "URL is not authorized.";
+        } else {
+          errorMessage = "Password reset is unsuccessful.";
+        }
+        util.setError(400, errorMessage);
       }
       return util.send(res);
     } catch (error) {
@@ -94,7 +102,7 @@ class ResetPasswordController {
           userWithNewPassword
         );
       } else {
-        util.setSuccess(200, "Password reset was unsuccessful");
+        util.setError(400, "Password reset was unsuccessful");
       }
       return util.send(res);
     } catch (error) {
