@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
   );
   Channels.associate = function(models) {
     Channels.belongsTo(models.Feeds);
+    Channels.belongsToMany(models.Users, {
+      through: "UserChannels",
+      as: "users",
+      foreignKey: "ChannelId",
+      otherKey: "UserId"
+    });
   };
   return Channels;
 };

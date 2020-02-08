@@ -100,8 +100,6 @@ class ReportController {
         // Add Array Rows
         worksheet.addRows(reportData);
 
-        console.log(reportData);
-
         res.setHeader(
           "Content-Type",
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
