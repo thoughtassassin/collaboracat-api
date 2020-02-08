@@ -27,14 +27,14 @@ config.config();
 
 const app = express();
 
-// Force https
-// app.enable("trust proxy"); //needed if you're behind a load balancer
-// app.use(function(req, res, next) {
-//   if (req.secure) {
-//     return next();
-//   }
-//   res.redirect("https://" + req.headers.host + req.url);
-// });
+//Force https
+app.enable("trust proxy"); //needed if you're behind a load balancer
+app.use(function(req, res, next) {
+  if (req.secure) {
+    return next();
+  }
+  res.redirect("https://" + req.headers.host + req.url);
+});
 
 /*
   var whitelist = ["http://localhost:0000", "http://example2.com"];
