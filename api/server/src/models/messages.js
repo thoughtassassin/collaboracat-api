@@ -3,7 +3,9 @@ module.exports = (sequelize, DataTypes) => {
   const Messages = sequelize.define(
     "Messages",
     {
-      content: DataTypes.TEXT
+      content: DataTypes.TEXT,
+      priority: DataTypes.BOOLEAN,
+      interaction: DataTypes.STRING
     },
     {}
   );
