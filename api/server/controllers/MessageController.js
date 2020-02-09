@@ -1,7 +1,8 @@
-import MessageService from "../services/MessageService";
 import ChannelService from "../services/ChannelService";
+import MessageService from "../services/MessageService";
 import sgMail from "@sendgrid/mail";
 import Util from "../utils/Utils";
+import UserService from "../services/UserService";
 
 const util = new Util();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -23,7 +24,12 @@ class MessageController {
   }
 
   static async addMessage(req, res) {
-    if (!req.body.content || !req.body.ChannelId || !req.body.UserId) {
+    if (
+      !req.body.content ||
+      !req.body.ChannelId ||
+      !req.body.UserId ||
+      !req.body.url
+    ) {
       util.setError(400, "Please provide complete details");
       return util.send(res);
     }
@@ -31,23 +37,37 @@ class MessageController {
     try {
       const createdMessage = await MessageService.addMessage(newMessage);
       util.setSuccess(201, "Message Added!", createdMessage);
+
       // get notified users
       let notifiedUsers = await MessageService.getNotifiedUsers(
         req.body.ChannelId
       );
+
+      // get first name and last name of user sending message
+      let user = await UserService.getUserById(req.body.UserId);
+      const usernameArray = user.username.split(" ");
+      const userFirstInitial = user.username.substring(0, 1);
+      const userFirstInitialLastName =
+        userFirstInitial + ". " + usernameArray[1];
+
+      //create link to message
+      const link = `${req.body.url}/messages/${createdMessage.id}`;
+
+      //filter non-priority
       if (!req.body.priority) {
         notifiedUsers = notifiedUsers.filter(
           notifiedUser => notifiedUser.type !== "priority"
         );
       }
+
       //get channel name for notification
       const channel = await ChannelService.getAChannel(req.body.ChannelId);
       if (notifiedUsers.length > 0) {
         const msg = {
           to: notifiedUsers.map(notification => notification.recipient),
           from: "notifications@collaboracast.com",
-          subject: channel.name,
-          html: req.body.content
+          subject: `${channel.name}: ${userFirstInitialLastName}`,
+          html: `${req.body.content}\n\n${link}`
         };
         sgMail.send(msg);
       }
