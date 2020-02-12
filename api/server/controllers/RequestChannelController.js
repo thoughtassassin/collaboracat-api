@@ -7,11 +7,11 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class RequestChannelController {
   static async requestChannel(req, res) {
-    if (!req.body.name) {
-      util.setError(400, "Please provide a name");
+    if (!req.body.name || !req.body.username) {
+      util.setError(400, "Please provide a channel name and a username");
       return util.send(res);
     }
-    const { name } = req.body;
+    const { name, username } = req.body;
     try {
       const adminUsers = await RequestChannelService.getAdminUsers();
       if (adminUsers.length > 0) {
@@ -19,7 +19,7 @@ class RequestChannelController {
           to: adminUsers.map(adminUsers => adminUsers.email),
           from: "channel-requests@collaboracast.com",
           subject: "Channel Request",
-          html: `<p>Channel Request: <strong>${name}</strong></p>`
+          html: `<p>Channel Request: <strong>${name}</strong></p><p>From: ${username}</p>`
         };
         sgMail.send(msg);
         util.setSuccess(
