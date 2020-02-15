@@ -43,31 +43,37 @@ class MessageController {
         req.body.ChannelId
       );
 
-      // get first name and last name of user sending message
+      // get username
       let user = await UserService.getUserById(req.body.UserId);
+
+      // get first name and last name of user sending message
+      // if username doesn't have first and last just send username
       const usernameArray = user.username.split(" ");
       const userFirstInitial = user.username.substring(0, 1);
-      const userFirstInitialLastName =
-        userFirstInitial + ". " + usernameArray[1];
+      const userFirstInitialLastName = usernameArray[1]
+        ? userFirstInitial + ". " + usernameArray[1]
+        : user.username;
 
-      //create link to message
+      // create link to message
       const link = `${req.body.url}/messages/${createdMessage.id}`;
 
-      //filter non-priority
+      // get only non-priority users if message goes to all
       if (!req.body.priority) {
         notifiedUsers = notifiedUsers.filter(
           notifiedUser => notifiedUser.type !== "priority"
         );
       }
 
-      //get channel name for notification
+      // get channel name for notification
       const channel = await ChannelService.getAChannel(req.body.ChannelId);
+
+      // send message
       if (notifiedUsers.length > 0) {
         const msg = {
           to: notifiedUsers.map(notification => notification.recipient),
           from: "notifications@collaboracast.com",
           subject: `${channel.name}: ${userFirstInitialLastName}`,
-          html: `${req.body.content}\n\n${link}`
+          html: `${link} ${req.body.content}`
         };
         sgMail.send(msg);
       }
