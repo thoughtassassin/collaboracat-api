@@ -30,5 +30,10 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   UserChannelController.deleteUserChannel
 );
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  UserChannelController.removeUserChannel
+);
 
 export default router;

@@ -3,7 +3,11 @@ module.exports = (sequelize, DataTypes) => {
   const Channels = sequelize.define(
     "Channels",
     {
-      name: DataTypes.STRING
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      }
     },
     {}
   );
