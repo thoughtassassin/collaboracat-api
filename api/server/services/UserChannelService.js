@@ -65,6 +65,23 @@ class UserChannelService {
       throw error;
     }
   }
+  static async removeUserChannel(channelId, userId) {
+    try {
+      const UserChannelToDelete = await database.UserChannel.findOne({
+        where: { ChannelId: Number(channelId), UserId: Number(userId) }
+      });
+
+      if (UserChannelToDelete) {
+        const deletedUserChannel = await database.UserChannel.destroy({
+          where: { ChannelId: Number(channelId), UserId: Number(userId) }
+        });
+        return deletedUserChannel;
+      }
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default UserChannelService;

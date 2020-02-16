@@ -108,6 +108,25 @@ class UserChannelController {
       return util.send(res);
     }
   }
+
+  static async removeUserChannel(req, res) {
+    if (!req.body.ChannelId || !req.body.UserId) {
+      util.setError(400, "Please provide complete details");
+      return util.send(res);
+    }
+    const { ChannelId, UserId } = req.body;
+    try {
+      const createdUserChannel = await UserChannelService.removeUserChannel(
+        ChannelId,
+        UserId
+      );
+      util.setSuccess(201, "UserChannel Added!", createdUserChannel);
+      return util.send(res);
+    } catch (error) {
+      util.setError(400, error.message);
+      return util.send(res);
+    }
+  }
 }
 
 export default UserChannelController;
