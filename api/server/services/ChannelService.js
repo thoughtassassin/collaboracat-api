@@ -4,7 +4,8 @@ class ChannelService {
   static async getAllChannels() {
     try {
       return await database.Channels.findAll({
-        order: [["name", "ASC"]]
+        order: [["name", "ASC"]],
+        where: { archived: null }
       });
     } catch (error) {
       throw error;
