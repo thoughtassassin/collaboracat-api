@@ -4,6 +4,7 @@ class UserService {
   static async getAllUsers() {
     try {
       return await database.Users.findAll({
+        where: { archived: null },
         order: [["username", "ASC"]]
       });
     } catch (error) {
