@@ -8,6 +8,7 @@ class MessageService {
           {
             model: database.Users,
             attributes: ["username"],
+            where: { archived: null },
             include: [
               {
                 model: database.Warehouse,
@@ -161,6 +162,7 @@ class MessageService {
           {
             model: database.Users,
             attributes: ["username"],
+            where: { archived: null },
             include: [
               {
                 model: database.Warehouse,
@@ -239,7 +241,9 @@ class MessageService {
                   JOIN "Users" ON "Notifications"."UserId" = "Users"."id"
                   JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
                   WHERE 
-                    "Notifications"."ChannelId" = ${channelId}`;
+                    "Notifications"."ChannelId" = ${channelId}
+                  AND
+	                  "Users"."archived" IS NULL`;
     try {
       const messageNotifications = await database.sequelize.query(query, {
         type: database.sequelize.QueryTypes.SELECT
