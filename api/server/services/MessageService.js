@@ -21,7 +21,8 @@ class MessageService {
           },
           {
             model: database.Channels,
-            attributes: ["name"]
+            attributes: ["name"],
+            where: { archived: null }
           }
         ],
         order: [["createdAt", "DESC"]]

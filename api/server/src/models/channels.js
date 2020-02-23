@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+      },
+      archived: {
+        type: DataTypes.BOOLEAN
       }
     },
     {}
@@ -19,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "ChannelId",
       otherKey: "UserId"
     });
+    Channels.hasMany(models.Messages);
   };
   return Channels;
 };
