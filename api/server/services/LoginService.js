@@ -4,7 +4,7 @@ class LoginService {
   static async login(email) {
     try {
       return await database.Users.findOne({
-        where: { email: email },
+        where: { email: email, archived: null },
         include: [
           {
             model: database.Role,

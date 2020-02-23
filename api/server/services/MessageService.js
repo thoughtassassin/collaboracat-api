@@ -8,7 +8,6 @@ class MessageService {
           {
             model: database.Users,
             attributes: ["username"],
-            where: { archived: null },
             include: [
               {
                 model: database.Warehouse,
