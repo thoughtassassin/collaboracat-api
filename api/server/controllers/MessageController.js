@@ -75,7 +75,7 @@ class MessageController {
           subject: `${channel.name}: ${userFirstInitialLastName}`,
           html: `${link} ${req.body.content}`
         };
-        sgMail.send(msg);
+        await sgMail.send(msg);
       }
       return util.send(res);
     } catch (error) {

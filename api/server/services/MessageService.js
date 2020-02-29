@@ -239,7 +239,9 @@ class MessageService {
                   JOIN "Users" ON "Notifications"."UserId" = "Users"."id"
                   JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
                   WHERE 
-                    "Notifications"."ChannelId" = ${channelId}`;
+                    "Notifications"."ChannelId" = ${channelId}
+                  AND
+	                  "Users"."archived" IS NULL`;
     try {
       const messageNotifications = await database.sequelize.query(query, {
         type: database.sequelize.QueryTypes.SELECT
@@ -252,7 +254,12 @@ class MessageService {
             type: notification.type
           });
         }
-        return notifications;
+        // filter duplicate email addresses
+        return notifications.filter(
+          (notification, index, self) =>
+            index ===
+            self.findIndex(n => n.recipient === notification.recipient)
+        );
       }, []);
     } catch (error) {
       throw error;
