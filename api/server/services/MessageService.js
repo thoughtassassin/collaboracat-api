@@ -254,7 +254,12 @@ class MessageService {
             type: notification.type
           });
         }
-        return notifications;
+        // filter duplicate email addresses
+        return notifications.filter(
+          (notification, index, self) =>
+            index ===
+            self.findIndex(n => n.recipient === notification.recipient)
+        );
       }, []);
     } catch (error) {
       throw error;
