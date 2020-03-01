@@ -39,5 +39,10 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   NotificationController.getUserNotifications
 );
+router.post(
+  "/set-all/:userId",
+  passport.authenticate("jwt", { session: false }),
+  NotificationController.setAllUserNotifications
+);
 
 export default router;

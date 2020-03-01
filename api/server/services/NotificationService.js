@@ -108,6 +108,63 @@ class NotificationService {
       throw error;
     }
   }
+
+  static async setAllNotificationsForUser(userId, type, userType) {
+    let query;
+    if (userType === "representative") {
+      query = `INSERT INTO "Notifications" 
+              ("ChannelId", 
+                "UserId", 
+                type, 
+                "createdAt", 
+                "updatedAt")
+                (SELECT 
+                "Channels"."id" AS "ChannelId", 
+                '${userId}' AS "UserId", 
+                '${type}' AS type,
+                now() AS "createdAt", 
+                  now() AS "updatedAt" 
+              FROM "Channels"
+              JOIN "UserChannels" 
+                ON "UserChannels"."ChannelId" = "Channels"."id" 
+                AND "UserChannels"."UserId" = '${userId}')`;
+    } else {
+      query = `INSERT INTO "Notifications" 
+              ("ChannelId", 
+                "UserId", 
+                type, 
+                "createdAt", 
+                "updatedAt")
+              (SELECT 
+                id AS "ChannelId", 
+                '${userId}' AS "UserId",
+                '${type}' AS "type", 
+                now() AS "createdAt", 
+                now() AS updatedAt 
+                from "Channels")`;
+    }
+    try {
+      await this.deleteAllNotificationsForUser(userId);
+      const insertedNotifications = await database.sequelize.query(query, {
+        type: database.sequelize.QueryTypes.SELECT
+      });
+      return insertedNotifications;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async deleteAllNotificationsForUser(userId) {
+    const query = `DELETE FROM "Notifications" WHERE "UserId" = ${userId};`;
+    try {
+      const deletedNotifications = await database.sequelize.query(query, {
+        type: database.sequelize.QueryTypes.SELECT
+      });
+
+      return deletedNotifications;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default NotificationService;
