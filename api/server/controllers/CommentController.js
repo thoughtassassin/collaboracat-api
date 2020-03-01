@@ -60,7 +60,7 @@ class CommentController {
       const message = await MessageService.getAMessage(req.body.MessageId);
 
       // get channel name for notification
-      const channel = await ChannelService.getAChannel(message.id);
+      const channel = await ChannelService.getAChannel(message.ChannelId);
 
       if (notifiedUsers.length > 0) {
         const msg = {
