@@ -64,6 +64,8 @@ class CommentController {
       // get channel name for notification
       const channel = await ChannelService.getAChannel(message.id);
 
+      console.log("NOTIFIED USERS: ", notifiedUsers);
+
       if (notifiedUsers.length > 0) {
         const msg = {
           to: notifiedUsers.map(notification => notification.recipient),
