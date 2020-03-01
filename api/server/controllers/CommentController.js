@@ -42,8 +42,6 @@ class CommentController {
         req.body.MessageId
       );
 
-      console.log(notifiedUsers);
-
       // get username
       let user = await UserService.getUserById(req.body.UserId);
 
@@ -63,8 +61,6 @@ class CommentController {
 
       // get channel name for notification
       const channel = await ChannelService.getAChannel(message.id);
-
-      console.log("NOTIFIED USERS: ", notifiedUsers);
 
       if (notifiedUsers.length > 0) {
         const msg = {
