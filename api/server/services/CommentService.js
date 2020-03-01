@@ -77,6 +77,42 @@ class CommentService {
       throw error;
     }
   }
+
+  static async getNotifiedUsers(messageId) {
+    const query = `SELECT "Messages"."UserId", "Users"."phone", "Providers"."domain"
+                    FROM "Messages"
+                    JOIN "Users" ON "Messages"."UserId" = "Users"."id"
+                    JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
+                    WHERE "Messages"."id" = ${messageId}
+                    UNION
+                    SELECT "Comments"."UserId", "Users"."phone", "Providers"."domain"
+                    FROM "Messages"
+                    JOIN "Comments" ON "Comments"."MessageId" = "Messages"."id"
+                    JOIN "Users" ON "Comments"."UserId" = "Users"."id"
+                    JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
+                    WHERE "Messages"."id" = ${messageId}`;
+    try {
+      const messageNotifications = await database.sequelize.query(query, {
+        type: database.sequelize.QueryTypes.SELECT
+      });
+      return messageNotifications.reduce((notifications, notification) => {
+        if (notification.phone && notification.domain) {
+          notifications.push({
+            recipient:
+              notification.phone.replace(/-/g, "") + "@" + notification.domain
+          });
+        }
+        // filter duplicate email addresses
+        return notifications.filter(
+          (notification, index, self) =>
+            index ===
+            self.findIndex(n => n.recipient === notification.recipient)
+        );
+      }, []);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default CommentService;
