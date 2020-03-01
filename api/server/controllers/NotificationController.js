@@ -159,6 +159,31 @@ class NotificationController {
       return util.send(res);
     }
   }
+
+  static async setAllUserNotifications(req, res) {
+    if (!req.body.type || !req.body.userType) {
+      util.setError(400, "Please provide complete details");
+      return util.send(res);
+    }
+    const { userId } = req.params;
+    const { type, userType } = req.body;
+    try {
+      if (type === "none") {
+        await NotificationService.deleteAllNotificationsForUser(userId);
+      } else {
+        await NotificationService.setAllNotificationsForUser(
+          userId,
+          type,
+          userType
+        );
+      }
+      util.setSuccess(201, "Notifications Set!");
+      return util.send(res);
+    } catch (error) {
+      util.setError(400, error.message);
+      return util.send(res);
+    }
+  }
 }
 
 export default NotificationController;
