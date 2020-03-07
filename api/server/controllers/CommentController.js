@@ -47,11 +47,11 @@ class CommentController {
 
       // get first name and last name of user sending message
       // if username doesn't have first and last just send username
-      const usernameArray = user.username.split(" ");
-      const userFirstInitial = user.username.substring(0, 1);
+      const usernameArray = user.username.trim().split(/\s/);
+      const userFirstInitial = usernameArray[0].substring(0, 1);
       const userFirstInitialLastName = usernameArray[1]
         ? userFirstInitial + ". " + usernameArray[1]
-        : user.username;
+        : user.username.trim();
 
       // create link to message
       const link = `${req.body.url}/messages/${req.body.MessageId}`;
