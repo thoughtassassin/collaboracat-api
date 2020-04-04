@@ -9,8 +9,10 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class MessageController {
   static async getAllMessages(req, res) {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 20;
     try {
-      const allMessages = await MessageService.getAllMessages();
+      const allMessages = await MessageService.getAllMessages(page, limit);
       if (allMessages.length > 0) {
         util.setSuccess(200, "Messages retrieved", allMessages);
       } else {
@@ -60,7 +62,7 @@ class MessageController {
       // get only non-priority users if message goes to all
       if (!req.body.priority) {
         notifiedUsers = notifiedUsers.filter(
-          notifiedUser => notifiedUser.type !== "priority"
+          (notifiedUser) => notifiedUser.type !== "priority"
         );
       }
 
@@ -70,10 +72,10 @@ class MessageController {
       // send message
       if (notifiedUsers.length > 0) {
         const msg = {
-          to: notifiedUsers.map(notification => notification.recipient),
+          to: notifiedUsers.map((notification) => notification.recipient),
           from: "notifications@collaboracast.com",
           subject: `${channel.name}: ${userFirstInitialLastName}`,
-          html: `${link} ${req.body.content}`
+          html: `${link} ${req.body.content}`,
         };
         await sgMail.send(msg);
       }
@@ -156,6 +158,8 @@ class MessageController {
 
   static async getChannelMessages(req, res) {
     const { channelid } = req.params;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 20;
 
     if (!Number(channelid)) {
       util.setError(400, "Please input a valid numeric value");
@@ -163,7 +167,11 @@ class MessageController {
     }
 
     try {
-      const Messages = await MessageService.getChannelMessages(channelid);
+      const Messages = await MessageService.getChannelMessages(
+        channelid,
+        page,
+        limit
+      );
 
       if (!Messages) {
         util.setError(
@@ -205,6 +213,8 @@ class MessageController {
 
   static async getUserMessages(req, res) {
     const { email } = req.params;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 20;
 
     if (!email) {
       util.setError(400, "Please input a valid email");
@@ -212,7 +222,7 @@ class MessageController {
     }
 
     try {
-      const Messages = await MessageService.getUserMessages(email);
+      const Messages = await MessageService.getUserMessages(email, page, limit);
 
       if (!Messages) {
         util.setError(404, `Cannot find Messages with the username ${email}`);
