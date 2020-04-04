@@ -190,6 +190,8 @@ class MessageController {
 
   static async getMessagesByUser(req, res) {
     const { userId } = req.params;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 20;
 
     if (!userId) {
       util.setError(400, "Please input a valid user id");
@@ -197,7 +199,11 @@ class MessageController {
     }
 
     try {
-      const Messages = await MessageService.getMessagesByUser(userId);
+      const Messages = await MessageService.getMessagesByUser(
+        userId,
+        page,
+        limit
+      );
 
       if (!Messages) {
         util.setError(404, `Cannot find Messages with the user id ${userId}`);

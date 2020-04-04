@@ -122,7 +122,7 @@ class MessageService {
     }
   }
 
-  static async getMessagesByUser(userId) {
+  static async getMessagesByUser(userId, page = 1, limit = 20) {
     try {
       const messagesByUser = await database.Messages.findAll({
         where: { UserId: Number(userId) },
@@ -147,6 +147,8 @@ class MessageService {
           },
         ],
         order: [["createdAt", "DESC"]],
+        limit: limit,
+        offset: page,
       });
 
       return messagesByUser;
