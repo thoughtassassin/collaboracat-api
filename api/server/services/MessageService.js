@@ -1,7 +1,7 @@
 import database from "../src/models";
 
 class MessageService {
-  static async getAllMessages() {
+  static async getAllMessages(page = 1, limit = 20) {
     try {
       return await database.Messages.findAll({
         include: [
@@ -11,21 +11,23 @@ class MessageService {
             include: [
               {
                 model: database.Warehouse,
-                attributes: ["name"]
-              }
-            ]
+                attributes: ["name"],
+              },
+            ],
           },
           {
             model: database.Comments,
-            attributes: ["id"]
+            attributes: ["id"],
           },
           {
             model: database.Channels,
             attributes: ["name"],
-            where: { archived: null }
-          }
+            where: { archived: null },
+          },
         ],
-        order: [["createdAt", "DESC"]]
+        order: [["createdAt", "DESC"]],
+        limit: limit,
+        offset: page,
       });
     } catch (error) {
       throw error;
@@ -43,12 +45,12 @@ class MessageService {
   static async updateMessage(id, updateMessage) {
     try {
       const MessageToUpdate = await database.Messages.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (MessageToUpdate) {
         await database.Messages.update(updateMessage, {
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
 
         return updateMessage;
@@ -66,7 +68,7 @@ class MessageService {
         include: [
           {
             model: database.Channels,
-            attributes: ["name"]
+            attributes: ["name"],
           },
           {
             model: database.Comments,
@@ -77,11 +79,11 @@ class MessageService {
                 include: [
                   {
                     model: database.Warehouse,
-                    attributes: ["name"]
-                  }
-                ]
-              }
-            ]
+                    attributes: ["name"],
+                  },
+                ],
+              },
+            ],
           },
           {
             model: database.Users,
@@ -89,11 +91,11 @@ class MessageService {
             include: [
               {
                 model: database.Warehouse,
-                attributes: ["name"]
-              }
-            ]
-          }
-        ]
+                attributes: ["name"],
+              },
+            ],
+          },
+        ],
       });
 
       return theMessage;
@@ -105,12 +107,12 @@ class MessageService {
   static async deleteMessage(id) {
     try {
       const MessageToDelete = await database.Messages.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (MessageToDelete) {
         const deletedMessage = await database.Messages.destroy({
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
         return deletedMessage;
       }
@@ -120,7 +122,7 @@ class MessageService {
     }
   }
 
-  static async getMessagesByUser(userId) {
+  static async getMessagesByUser(userId, page = 1, limit = 20) {
     try {
       const messagesByUser = await database.Messages.findAll({
         where: { UserId: Number(userId) },
@@ -131,20 +133,22 @@ class MessageService {
             include: [
               {
                 model: database.Warehouse,
-                attributes: ["name"]
-              }
-            ]
+                attributes: ["name"],
+              },
+            ],
           },
           {
             model: database.Comments,
-            attributes: ["id"]
+            attributes: ["id"],
           },
           {
             model: database.Channels,
-            attributes: ["name"]
-          }
+            attributes: ["name"],
+          },
         ],
-        order: [["createdAt", "DESC"]]
+        order: [["createdAt", "DESC"]],
+        limit: limit,
+        offset: page,
       });
 
       return messagesByUser;
@@ -153,7 +157,7 @@ class MessageService {
     }
   }
 
-  static async getChannelMessages(ChannelId) {
+  static async getChannelMessages(ChannelId, page = 1, limit = 20) {
     try {
       const channelMessages = await database.Messages.findAll({
         where: { ChannelId: Number(ChannelId) },
@@ -164,20 +168,22 @@ class MessageService {
             include: [
               {
                 model: database.Warehouse,
-                attributes: ["name"]
-              }
-            ]
+                attributes: ["name"],
+              },
+            ],
           },
           {
             model: database.Comments,
-            attributes: ["id"]
+            attributes: ["id"],
           },
           {
             model: database.Channels,
-            attributes: ["name"]
-          }
+            attributes: ["name"],
+          },
         ],
-        order: [["createdAt", "DESC"]]
+        order: [["createdAt", "DESC"]],
+        limit: limit,
+        offset: page,
       });
 
       return channelMessages;
@@ -186,7 +192,7 @@ class MessageService {
     }
   }
 
-  static async getUserMessages(email) {
+  static async getUserMessages(email, page = 1, limit = 20) {
     const query = `SELECT 
           "Messages".*,
           "Users"."username",
@@ -217,10 +223,12 @@ class MessageService {
           "Users"."WarehouseId",
           "Warehouses"."name",
 	        "Channels"."name"
-        ORDER BY "Messages"."createdAt" DESC`;
+        ORDER BY "Messages"."createdAt" DESC
+        LIMIT ${limit}
+        OFFSET ${page}`;
     try {
       const userMessages = await database.sequelize.query(query, {
-        type: database.sequelize.QueryTypes.SELECT
+        type: database.sequelize.QueryTypes.SELECT,
       });
 
       return userMessages;
@@ -244,21 +252,21 @@ class MessageService {
 	                  "Users"."archived" IS NULL`;
     try {
       const messageNotifications = await database.sequelize.query(query, {
-        type: database.sequelize.QueryTypes.SELECT
+        type: database.sequelize.QueryTypes.SELECT,
       });
       return messageNotifications.reduce((notifications, notification) => {
         if (notification.phone && notification.domain) {
           notifications.push({
             recipient:
               notification.phone.replace(/-/g, "") + "@" + notification.domain,
-            type: notification.type
+            type: notification.type,
           });
         }
         // filter duplicate email addresses
         return notifications.filter(
           (notification, index, self) =>
             index ===
-            self.findIndex(n => n.recipient === notification.recipient)
+            self.findIndex((n) => n.recipient === notification.recipient)
         );
       }, []);
     } catch (error) {
