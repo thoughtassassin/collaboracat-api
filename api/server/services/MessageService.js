@@ -27,7 +27,7 @@ class MessageService {
         ],
         order: [["createdAt", "DESC"]],
         limit: limit,
-        offset: page,
+        offset: (page - 1) * limit,
       });
     } catch (error) {
       throw error;
@@ -148,7 +148,7 @@ class MessageService {
         ],
         order: [["createdAt", "DESC"]],
         limit: limit,
-        offset: page,
+        offset: (page - 1) * limit,
       });
 
       return messagesByUser;
@@ -183,7 +183,7 @@ class MessageService {
         ],
         order: [["createdAt", "DESC"]],
         limit: limit,
-        offset: page,
+        offset: (page - 1) * limit,
       });
 
       return channelMessages;
@@ -225,7 +225,7 @@ class MessageService {
 	        "Channels"."name"
         ORDER BY "Messages"."createdAt" DESC
         LIMIT ${limit}
-        OFFSET ${page}`;
+        OFFSET ${(page - 1) * limit}`;
     try {
       const userMessages = await database.sequelize.query(query, {
         type: database.sequelize.QueryTypes.SELECT,
