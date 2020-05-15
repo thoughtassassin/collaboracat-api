@@ -14,6 +14,7 @@ import messageRoutes from "./server/routes/MessageRoutes";
 import messageCommentsRoutes from "./server/routes/MessageCommentsRoutes";
 import notificationRoutes from "./server/routes/NotificationRoutes";
 import providerRoutes from "./server/routes/ProviderRoutes";
+import rateLimit from "express-rate-limit";
 import reportRoutes from "./server/routes/ReportRoutes";
 import requestChannelRoutes from "./server/routes/RequestChannelRoutes";
 import resetPasswordRoutes from "./server/routes/ResetPasswordRoutes";
@@ -29,7 +30,7 @@ config.config();
 
 const app = express();
 
-//Force https
+// Force https
 app.enable("trust proxy"); //needed if you're behind a load balancer
 app.use(function (req, res, next) {
   if (req.secure) {
@@ -51,7 +52,17 @@ app.use(function (req, res, next) {
   };
  */
 
+// limit body payload
 app.use(express.json({ limit: "10kb" }));
+
+// rate limit
+const limit = rateLimit({
+  max: 100, // max requests
+  windowMs: 60 * 60 * 1000, // 1 Hour
+  message: "Too many requests", // message to send
+});
+app.use("/routeName", limit); // Setting limiter on specific rout
+
 app.use(cors());
 app.options("*", cors());
 app.use(bodyParser.json());
