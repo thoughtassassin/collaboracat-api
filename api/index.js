@@ -31,7 +31,7 @@ const app = express();
 
 //Force https
 app.enable("trust proxy"); //needed if you're behind a load balancer
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   if (req.secure) {
     return next();
   }
@@ -51,6 +51,7 @@ app.use(function(req, res, next) {
   };
  */
 
+app.use(express.json({ limit: "10kb" }));
 app.use(cors());
 app.options("*", cors());
 app.use(bodyParser.json());
@@ -84,7 +85,7 @@ app.use("/api/v1/warehouses", warehouseRoutes);
 // when a random route is inputed
 app.get("*", (req, res) =>
   res.status(200).send({
-    message: "Welcome to this API."
+    message: "Welcome to this API.",
   })
 );
 
