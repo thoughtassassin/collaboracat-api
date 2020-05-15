@@ -61,7 +61,7 @@ const limit = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 Hour
   message: "Too many requests", // message to send
 });
-app.use("/routeName", limit); // Setting limiter on specific rout
+app.use(limit);
 
 app.use(cors());
 app.options("*", cors());
