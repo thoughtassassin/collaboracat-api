@@ -17,11 +17,12 @@ class NotificationService {
         "Notifications"."id" AS "notificationId"
         FROM "Channels"
         LEFT JOIN "Notifications" ON "Notifications"."ChannelId" = "Channels"."id" 
-  	        AND "Notifications"."UserId" = ${userId}
+  	        AND "Notifications"."UserId" = :userId
         ORDER BY "Channels"."name" ASC`;
     try {
       const adminNotifications = await database.sequelize.query(query, {
-        type: database.sequelize.QueryTypes.SELECT
+        replacements: { userId },
+        type: database.sequelize.QueryTypes.SELECT,
       });
 
       return adminNotifications;
@@ -39,11 +40,12 @@ class NotificationService {
         FROM "Channels"
         JOIN "UserChannels" ON "UserChannels"."ChannelId" = "Channels"."id" AND "UserChannels"."UserId" = ${userId}
         LEFT JOIN "Notifications" ON "Notifications"."ChannelId" = "Channels"."id" 
-  	        AND "Notifications"."UserId" = ${userId}
+  	        AND "Notifications"."UserId" = :userId
         ORDER BY "Channels"."name" ASC`;
     try {
       const adminNotifications = await database.sequelize.query(query, {
-        type: database.sequelize.QueryTypes.SELECT
+        replacements: { userId },
+        type: database.sequelize.QueryTypes.SELECT,
       });
 
       return adminNotifications;
@@ -63,12 +65,12 @@ class NotificationService {
   static async updateNotification(id, updateNotification) {
     try {
       const NotificationToUpdate = await database.Notification.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (NotificationToUpdate) {
         await database.Notification.update(updateNotification, {
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
 
         return updateNotification;
@@ -82,7 +84,7 @@ class NotificationService {
   static async getANotification(id) {
     try {
       const theNotification = await database.Notification.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       return theNotification;
@@ -94,12 +96,12 @@ class NotificationService {
   static async deleteNotification(id) {
     try {
       const NotificationToDelete = await database.Notification.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (NotificationToDelete) {
         const deletedNotification = await database.Notification.destroy({
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
         return deletedNotification;
       }
@@ -120,14 +122,14 @@ class NotificationService {
                 "updatedAt")
                 (SELECT 
                 "Channels"."id" AS "ChannelId", 
-                '${userId}' AS "UserId", 
-                '${type}' AS type,
+                :userId AS "UserId", 
+                :type AS type,
                 now() AS "createdAt", 
                   now() AS "updatedAt" 
               FROM "Channels"
               JOIN "UserChannels" 
                 ON "UserChannels"."ChannelId" = "Channels"."id" 
-                AND "UserChannels"."UserId" = '${userId}')`;
+                AND "UserChannels"."UserId" = :userId)`;
     } else {
       query = `INSERT INTO "Notifications" 
               ("ChannelId", 
@@ -137,8 +139,8 @@ class NotificationService {
                 "updatedAt")
               (SELECT 
                 id AS "ChannelId", 
-                '${userId}' AS "UserId",
-                '${type}' AS "type", 
+                :userId AS "UserId",
+                :type AS "type", 
                 now() AS "createdAt", 
                 now() AS updatedAt 
                 from "Channels")`;
@@ -146,7 +148,8 @@ class NotificationService {
     try {
       await this.deleteAllNotificationsForUser(userId);
       const insertedNotifications = await database.sequelize.query(query, {
-        type: database.sequelize.QueryTypes.SELECT
+        replacements: { userId, type },
+        type: database.sequelize.QueryTypes.SELECT,
       });
       return insertedNotifications;
     } catch (error) {
@@ -157,7 +160,7 @@ class NotificationService {
     const query = `DELETE FROM "Notifications" WHERE "UserId" = ${userId};`;
     try {
       const deletedNotifications = await database.sequelize.query(query, {
-        type: database.sequelize.QueryTypes.SELECT
+        type: database.sequelize.QueryTypes.SELECT,
       });
 
       return deletedNotifications;

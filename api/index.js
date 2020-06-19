@@ -24,6 +24,7 @@ import userChannelRoutes from "./server/routes/UserChannelRoutes";
 import userMessagesRoutes from "./server/routes/UserMessagesRoutes";
 import userRoutes from "./server/routes/UserRoutes";
 import warehouseRoutes from "./server/routes/WarehouseRoutes";
+import xss from "xss-clean";
 import cors from "cors";
 
 config.config();
@@ -65,6 +66,7 @@ app.use(limit);
 
 app.use(cors());
 app.options("*", cors());
+app.use(xss());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

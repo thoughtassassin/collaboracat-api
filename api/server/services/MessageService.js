@@ -215,7 +215,7 @@ class MessageService {
 			      JOIN "UserChannels" ON "Users"."id" = "UserChannels"."UserId"
 			      JOIN "Channels" ON "UserChannels"."ChannelId" = "Channels"."id" 
 		        WHERE 
-			        "email" = '${email}'
+			        "email" = :email
 	        )
         GROUP BY 
 	        "Messages"."id",
@@ -224,10 +224,11 @@ class MessageService {
           "Warehouses"."name",
 	        "Channels"."name"
         ORDER BY "Messages"."createdAt" DESC
-        LIMIT ${limit}
-        OFFSET ${(page - 1) * limit}`;
+        LIMIT :limit
+        OFFSET :offset`;
     try {
       const userMessages = await database.sequelize.query(query, {
+        replacements: { email, limit, offset: (page - 1) * limit },
         type: database.sequelize.QueryTypes.SELECT,
       });
 
@@ -247,11 +248,12 @@ class MessageService {
                   JOIN "Users" ON "Notifications"."UserId" = "Users"."id"
                   JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
                   WHERE 
-                    "Notifications"."ChannelId" = ${channelId}
+                    "Notifications"."ChannelId" = :channelId
                   AND
 	                  "Users"."archived" IS NULL`;
     try {
       const messageNotifications = await database.sequelize.query(query, {
+        replacements: { channelId },
         type: database.sequelize.QueryTypes.SELECT,
       });
       return messageNotifications.reduce((notifications, notification) => {

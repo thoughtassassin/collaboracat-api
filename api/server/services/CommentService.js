@@ -20,12 +20,12 @@ class CommentService {
   static async updateComment(id, updateComment) {
     try {
       const CommentToUpdate = await database.Comments.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (CommentToUpdate) {
         await database.Comments.update(updateComment, {
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
 
         return updateComment;
@@ -39,7 +39,7 @@ class CommentService {
   static async getAComment(id) {
     try {
       const theComment = await database.Comments.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       return theComment;
@@ -51,12 +51,12 @@ class CommentService {
   static async deleteComment(id) {
     try {
       const CommentToDelete = await database.Comments.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (CommentToDelete) {
         const deletedComment = await database.Comments.destroy({
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
         return deletedComment;
       }
@@ -69,7 +69,7 @@ class CommentService {
   static async getMessageComments(MessageId) {
     try {
       const messageComments = await database.Comments.findAll({
-        where: { MessageId: Number(MessageId) }
+        where: { MessageId: Number(MessageId) },
       });
 
       return messageComments;
@@ -83,30 +83,31 @@ class CommentService {
                     FROM "Messages"
                     JOIN "Users" ON "Messages"."UserId" = "Users"."id"
                     JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
-                    WHERE "Messages"."id" = ${messageId}
+                    WHERE "Messages"."id" = :messageId
                     UNION
                     SELECT "Comments"."UserId", "Users"."phone", "Providers"."domain"
                     FROM "Messages"
                     JOIN "Comments" ON "Comments"."MessageId" = "Messages"."id"
                     JOIN "Users" ON "Comments"."UserId" = "Users"."id"
                     JOIN "Providers" ON "Providers"."id" = "Users"."ProviderId"
-                    WHERE "Messages"."id" = ${messageId}`;
+                    WHERE "Messages"."id" = :messageId`;
     try {
       const messageNotifications = await database.sequelize.query(query, {
-        type: database.sequelize.QueryTypes.SELECT
+        replacements: { messageId },
+        type: database.sequelize.QueryTypes.SELECT,
       });
       return messageNotifications.reduce((notifications, notification) => {
         if (notification.phone && notification.domain) {
           notifications.push({
             recipient:
-              notification.phone.replace(/-/g, "") + "@" + notification.domain
+              notification.phone.replace(/-/g, "") + "@" + notification.domain,
           });
         }
         // filter duplicate email addresses
         return notifications.filter(
           (notification, index, self) =>
             index ===
-            self.findIndex(n => n.recipient === notification.recipient)
+            self.findIndex((n) => n.recipient === notification.recipient)
         );
       }, []);
     } catch (error) {
