@@ -11,13 +11,14 @@ class ChannelUserService {
             as: "users",
             required: false,
             attributes: ["id", "username", "email", "phone"],
+            where: { archived: null },
             through: {
               model: database.UserChannels,
               as: "UserChannels",
-              attributes: ["UserId", "ChannelId"]
-            }
-          }
-        ]
+              attributes: ["UserId", "ChannelId"],
+            },
+          },
+        ],
       });
 
       return theChannelUsers;
