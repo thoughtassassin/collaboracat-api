@@ -57,6 +57,7 @@ class UserController {
   }
 
   static async getAUser(req, res) {
+    // TODO: find user by email
     const { username } = req.params;
     if (!username) {
       util.setError(400, "Please input a valid username");
@@ -73,7 +74,7 @@ class UserController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -96,7 +97,7 @@ class UserController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }

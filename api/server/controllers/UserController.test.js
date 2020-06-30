@@ -132,4 +132,82 @@ describe("UserController", () => {
       status: "error",
     });
   });
+
+  test("getAUser", async () => {
+    // no id in request
+    await UserController.getAUser({ params: {} }, res);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Please input a valid username",
+      status: "error",
+    });
+
+    // no user with requested username
+    UserService.getAUser.mockImplementationOnce(() => null);
+    await UserController.getAUser({ params: { username: "John Doe" } }, res);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Cannot find User John Doe",
+      status: "error",
+    });
+
+    // valid request
+    UserService.getAUser.mockImplementationOnce(() => ({
+      username: "John Doe",
+    }));
+    await UserController.getAUser({ params: { username: "John Doe" } }, res);
+    expect(res.json).toHaveBeenCalledWith({
+      data: { username: "John Doe" },
+      message: "Found User",
+      status: "success",
+    });
+
+    // error
+    UserService.getAUser.mockImplementationOnce(() => {
+      throw new Error("foo");
+    });
+    await UserController.getAUser({ params: { username: "John Doe" } }, res);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "foo",
+      status: "error",
+    });
+  });
+
+  test("deleteUser", async () => {
+    // no id in request
+    await UserController.deleteUser(
+      { body: { username: "John Doe" }, params: {} },
+      res
+    );
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Please provide a numeric value",
+      status: "error",
+    });
+
+    // no user with requested id
+    UserService.deleteUser.mockImplementationOnce(() => null);
+    await UserController.deleteUser({ params: { id: 5 } }, res);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "User with the id 5 cannot be found",
+      status: "error",
+    });
+
+    // valid request
+    UserService.deleteUser.mockImplementationOnce(() => ({
+      username: "John Doe",
+    }));
+    await UserController.deleteUser({ params: { id: 5 } }, res);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "User deleted",
+      status: "success",
+    });
+
+    // error
+    UserService.deleteUser.mockImplementationOnce(() => {
+      throw new Error("foo");
+    });
+    await UserController.deleteUser({ params: { id: 5 } }, res);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "foo",
+      status: "error",
+    });
+  });
 });
