@@ -1,11 +1,22 @@
 {
   "name": "collaboracast-sequelize",
+  "jest": {
+    "verbose": true,
+    "collectCoverageFrom": [
+      "api/**/*.{js,jsx}",
+      "!api/server/src/config/**",
+      "!api/server/src/migrations/**",
+      "!api/server/src/seeders/**",
+      "!**/node_modules/**"
+    ]
+  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node ./api/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --collectCoverage",
+    "test:watch": "jest --watch",
     "start": "babel-node ./api/index.js",
     "debug": "nodemon --inspect --exec babel-node ./api/index.js"
   },
@@ -39,9 +50,11 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.3",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^26.1.0"
   },
   "engines": {
     "node": "10.13.0"
