@@ -1,6 +1,5 @@
 import ChannelService from "../services/ChannelService";
 import Util from "../utils/Utils";
-import { read } from "fs";
 
 const util = new Util();
 
@@ -15,7 +14,7 @@ class ChannelController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -55,7 +54,7 @@ class ChannelController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -78,7 +77,7 @@ class ChannelController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -101,7 +100,7 @@ class ChannelController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
