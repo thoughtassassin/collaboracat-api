@@ -132,16 +132,18 @@ describe("ContactController", () => {
       status: "success",
     });
 
-    ContactService.getAllContacts.mockImplementationOnce(() => {
+    ContactService.addContact.mockImplementationOnce(() => {
       throw new Error("foo");
     });
-    await ContactController.getAllContacts(
+    await ContactController.addContact(
       {
-        firstName: "John",
-        lastName: "Doe",
-        phone: "4325555555",
-        email: "foo@bar.com",
-        ChannelId: "1",
+        body: {
+          firstName: "John",
+          lastName: "Doe",
+          phone: "4325555555",
+          email: "foo@bar.com",
+          ChannelId: "1",
+        },
       },
       res
     );
