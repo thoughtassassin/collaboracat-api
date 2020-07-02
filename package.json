@@ -4,6 +4,7 @@
     "verbose": true,
     "collectCoverageFrom": [
       "api/**/*.{js,jsx}",
+      "!api/server/routes/**/*.{js,jsx}",
       "!api/server/src/config/**",
       "!api/server/src/migrations/**",
       "!api/server/src/seeders/**",
