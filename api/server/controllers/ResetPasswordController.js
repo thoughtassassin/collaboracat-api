@@ -17,7 +17,7 @@ class ResetPasswordController {
     const authorizedURLs = [
       "https://collaboracast-dev.herokuapp.com",
       "https://donnan.collaboracast.com",
-      "http://localhost:3000"
+      "http://localhost:3000",
     ];
     try {
       const user = await ResetPasswordService.getUser(email);
@@ -29,16 +29,15 @@ class ResetPasswordController {
           token_secret,
           { expiresIn: 1200 }
         );
-
         const userWithResetToken = ResetPasswordService.updateUser(user.id, {
-          reset_token: token
+          reset_token: token,
         });
 
         const msg = {
           to: user.email,
           from: "reset-password@collaboracast.com",
           subject: "Reset Password",
-          html: `<p>A request to reset your password has been made. To reset your password, <a href="${url}/reset-password?email=${email}&token=${token}">click here</a></p>`
+          html: `<p>A request to reset your password has been made. To reset your password, <a href="${url}/reset-password?email=${email}&token=${token}">click here</a></p>`,
         };
         sgMail.send(msg);
         util.setSuccess(
@@ -52,14 +51,12 @@ class ResetPasswordController {
           errorMessage = "User not found.";
         } else if (!authorizedURLs.includes(url)) {
           errorMessage = "URL is not authorized.";
-        } else {
-          errorMessage = "Password reset is unsuccessful.";
         }
         util.setError(400, errorMessage);
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -86,14 +83,14 @@ class ResetPasswordController {
 
         const userWithNewPassword = ResetPasswordService.updateUser(user.id, {
           password: dbpassword,
-          reset_token: null
+          reset_token: null,
         });
 
         const msg = {
           to: user.email,
           from: "reset-password@collaboracast.com",
           subject: "Reset Password Request",
-          html: `<p>Your password was successfully reset.</p>`
+          html: `<p>Your password was successfully reset.</p>`,
         };
         sgMail.send(msg);
         util.setSuccess(
@@ -106,7 +103,7 @@ class ResetPasswordController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
