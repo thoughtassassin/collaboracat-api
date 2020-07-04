@@ -116,11 +116,11 @@ class UserChannelController {
     }
     const { ChannelId, UserId } = req.body;
     try {
-      const createdUserChannel = await UserChannelService.removeUserChannel(
+      const removedUserChannel = await UserChannelService.removeUserChannel(
         ChannelId,
         UserId
       );
-      util.setSuccess(201, "UserChannel Added!", createdUserChannel);
+      util.setSuccess(201, "UserChannel Removed!", removedUserChannel);
       return util.send(res);
     } catch (error) {
       util.setError(400, error.message);

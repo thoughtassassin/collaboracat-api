@@ -202,50 +202,70 @@ describe("UserChannelController", () => {
       status: "error",
     });
   });
-  test("deleteUserChannel", async () => {
-    // missing id in request
-    await UserChannelController.deleteUserChannel({ params: {} }, res);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "Please provide a numeric value",
-      status: "error",
-    });
-
-    // UserChannel not found
-    UserChannelService.deleteUserChannel.mockImplementationOnce(() => null);
-    await UserChannelController.deleteUserChannel(
+  test("removeUserChannel", async () => {
+    // missing ChannelId
+    await UserChannelController.removeUserChannel(
       {
-        body: { name: "foo" },
-        params: { id: 3 },
+        body: {
+          UserId: "1",
+        },
       },
       res
     );
     expect(res.json).toHaveBeenCalledWith({
-      message: "UserChannel with the id 3 cannot be found",
+      message: "Please provide complete details",
+      status: "error",
+    });
+
+    // missing UserId
+    await UserChannelController.removeUserChannel(
+      {
+        body: {
+          UserId: "1",
+        },
+      },
+      res
+    );
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Please provide complete details",
       status: "error",
     });
 
     // delete UserChannel
-    UserChannelService.deleteUserChannel.mockImplementationOnce(() => ({
-      name: "foo",
+    UserChannelService.removeUserChannel.mockImplementationOnce(() => ({
+      UserId: "1",
+      ChannelId: "1",
     }));
-    await UserChannelController.deleteUserChannel(
+    await UserChannelController.removeUserChannel(
       {
-        body: { name: "foo" },
+        body: {
+          UserId: "1",
+          ChannelId: "1",
+        },
         params: { id: 5 },
       },
       res
     );
     expect(res.json).toHaveBeenCalledWith({
-      message: "UserChannel deleted",
+      data: {
+        UserId: "1",
+        ChannelId: "1",
+      },
+      message: "UserChannel Removed!",
       status: "success",
     });
 
     // error
-    UserChannelService.deleteUserChannel.mockImplementationOnce(() => {
+    UserChannelService.removeUserChannel.mockImplementationOnce(() => {
       throw new Error("baz");
     });
-    await UserChannelController.deleteUserChannel(
-      { body: { name: "foo" }, params: { id: 5 } },
+    await UserChannelController.removeUserChannel(
+      {
+        body: {
+          UserId: "1",
+          ChannelId: "1",
+        },
+      },
       res
     );
     expect(res.json).toHaveBeenCalledWith({
