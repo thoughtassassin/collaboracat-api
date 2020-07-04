@@ -18,12 +18,12 @@ describe("RoleController", () => {
 
     // Roles
     RoleService.getAllRoles.mockImplementationOnce(() => [
-      { name: "foo" },
-      { name: "bar" },
+      { role: "foo" },
+      { role: "bar" },
     ]);
     await RoleController.getAllRoles(null, res);
     expect(res.json).toHaveBeenCalledWith({
-      data: [{ name: "foo" }, { name: "bar" }],
+      data: [{ role: "foo" }, { role: "bar" }],
       message: "Roles retrieved",
       status: "success",
     });
@@ -38,7 +38,6 @@ describe("RoleController", () => {
       status: "error",
     });
   });
-
   test("addRole", async () => {
     // missing name in request
     await RoleController.addRole({ body: {} }, res);
@@ -48,10 +47,10 @@ describe("RoleController", () => {
     });
 
     // add Role
-    RoleService.addRole.mockImplementationOnce(() => ({ name: "foo" }));
+    RoleService.addRole.mockImplementationOnce(() => ({ role: "foo" }));
     await RoleController.addRole({ body: { role: "foo" } }, res);
     expect(res.json).toHaveBeenCalledWith({
-      data: { name: "foo" },
+      data: { role: "foo" },
       message: "Role Added!",
       status: "success",
     });
@@ -78,7 +77,7 @@ describe("RoleController", () => {
     RoleService.updateRole.mockImplementationOnce(() => null);
     await RoleController.updatedRole(
       {
-        body: { name: "foo" },
+        body: { role: "foo" },
         params: { id: 2 },
       },
       res
@@ -90,17 +89,17 @@ describe("RoleController", () => {
 
     // update Role
     RoleService.updateRole.mockImplementationOnce(() => ({
-      name: "foo",
+      role: "foo",
     }));
     await RoleController.updatedRole(
       {
-        body: { name: "foo" },
+        body: { role: "foo" },
         params: { id: 5 },
       },
       res
     );
     expect(res.json).toHaveBeenCalledWith({
-      data: { name: "foo" },
+      data: { role: "foo" },
       message: "Role updated",
       status: "success",
     });
