@@ -178,7 +178,6 @@ describe("UserChannelController", () => {
     }));
     await UserChannelController.getAUserChannel(
       {
-        body: { name: "foo" },
         params: { id: 5 },
       },
       res
@@ -193,10 +192,7 @@ describe("UserChannelController", () => {
     UserChannelService.getAUserChannel.mockImplementationOnce(() => {
       throw new Error("baz");
     });
-    await UserChannelController.getAUserChannel(
-      { body: { name: "foo" }, params: { id: 5 } },
-      res
-    );
+    await UserChannelController.getAUserChannel({ params: { id: 5 } }, res);
     expect(res.json).toHaveBeenCalledWith({
       message: "baz",
       status: "error",
@@ -214,7 +210,6 @@ describe("UserChannelController", () => {
     UserChannelService.deleteUserChannel.mockImplementationOnce(() => null);
     await UserChannelController.deleteUserChannel(
       {
-        body: { name: "foo" },
         params: { id: 3 },
       },
       res
@@ -230,7 +225,6 @@ describe("UserChannelController", () => {
     }));
     await UserChannelController.deleteUserChannel(
       {
-        body: { name: "foo" },
         params: { id: 5 },
       },
       res
@@ -244,10 +238,7 @@ describe("UserChannelController", () => {
     UserChannelService.deleteUserChannel.mockImplementationOnce(() => {
       throw new Error("baz");
     });
-    await UserChannelController.deleteUserChannel(
-      { body: { name: "foo" }, params: { id: 5 } },
-      res
-    );
+    await UserChannelController.deleteUserChannel({ params: { id: 5 } }, res);
     expect(res.json).toHaveBeenCalledWith({
       message: "baz",
       status: "error",
