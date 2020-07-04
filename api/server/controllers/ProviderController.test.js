@@ -130,7 +130,6 @@ describe("ProviderController", () => {
     ProviderService.getAProvider.mockImplementationOnce(() => null);
     await ProviderController.getAProvider(
       {
-        body: { name: "foo" },
         params: { id: 3 },
       },
       res
@@ -146,7 +145,6 @@ describe("ProviderController", () => {
     }));
     await ProviderController.getAProvider(
       {
-        body: { name: "foo" },
         params: { id: 5 },
       },
       res
@@ -182,7 +180,6 @@ describe("ProviderController", () => {
     ProviderService.deleteProvider.mockImplementationOnce(() => null);
     await ProviderController.deleteProvider(
       {
-        body: { name: "foo" },
         params: { id: 3 },
       },
       res
@@ -198,7 +195,6 @@ describe("ProviderController", () => {
     }));
     await ProviderController.deleteProvider(
       {
-        body: { name: "foo" },
         params: { id: 5 },
       },
       res
@@ -212,10 +208,7 @@ describe("ProviderController", () => {
     ProviderService.deleteProvider.mockImplementationOnce(() => {
       throw new Error("baz");
     });
-    await ProviderController.deleteProvider(
-      { body: { name: "foo" }, params: { id: 5 } },
-      res
-    );
+    await ProviderController.deleteProvider({ params: { id: 5 } }, res);
     expect(res.json).toHaveBeenCalledWith({
       message: "baz",
       status: "error",
