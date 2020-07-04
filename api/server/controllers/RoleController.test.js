@@ -144,7 +144,6 @@ describe("RoleController", () => {
     }));
     await RoleController.getARole(
       {
-        body: { name: "foo" },
         params: { id: 5 },
       },
       res
@@ -159,10 +158,7 @@ describe("RoleController", () => {
     RoleService.getARole.mockImplementationOnce(() => {
       throw new Error("baz");
     });
-    await RoleController.getARole(
-      { body: { name: "foo" }, params: { id: 5 } },
-      res
-    );
+    await RoleController.getARole({ params: { id: 5 } }, res);
     expect(res.json).toHaveBeenCalledWith({
       message: "baz",
       status: "error",
@@ -180,7 +176,6 @@ describe("RoleController", () => {
     RoleService.deleteRole.mockImplementationOnce(() => null);
     await RoleController.deleteRole(
       {
-        body: { name: "foo" },
         params: { id: 3 },
       },
       res
@@ -196,7 +191,6 @@ describe("RoleController", () => {
     }));
     await RoleController.deleteRole(
       {
-        body: { name: "foo" },
         params: { id: 5 },
       },
       res
@@ -210,10 +204,7 @@ describe("RoleController", () => {
     RoleService.deleteRole.mockImplementationOnce(() => {
       throw new Error("baz");
     });
-    await RoleController.deleteRole(
-      { body: { name: "foo" }, params: { id: 5 } },
-      res
-    );
+    await RoleController.deleteRole({ params: { id: 5 } }, res);
     expect(res.json).toHaveBeenCalledWith({
       message: "baz",
       status: "error",
