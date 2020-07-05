@@ -5,7 +5,7 @@ class ChannelService {
     try {
       return await database.Channels.findAll({
         order: [["name", "ASC"]],
-        where: { archived: null }
+        where: { archived: null },
       });
     } catch (error) {
       throw error;
@@ -23,12 +23,12 @@ class ChannelService {
   static async updateChannel(id, updateChannel) {
     try {
       const ChannelToUpdate = await database.Channels.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (ChannelToUpdate) {
         await database.Channels.update(updateChannel, {
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
 
         return updateChannel;
@@ -42,7 +42,7 @@ class ChannelService {
   static async getAChannel(id) {
     try {
       const theChannel = await database.Channels.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       return theChannel;
@@ -54,12 +54,12 @@ class ChannelService {
   static async deleteChannel(id) {
     try {
       const ChannelToDelete = await database.Channels.findOne({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (ChannelToDelete) {
         const deletedChannel = await database.Channels.destroy({
-          where: { id: Number(id) }
+          where: { id: Number(id) },
         });
         return deletedChannel;
       }
