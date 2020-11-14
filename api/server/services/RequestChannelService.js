@@ -1,11 +1,11 @@
 import database from "../src/models";
 
-class ChannelUserService {
-  static async getAdminUsers(id) {
+class RequestChannelService {
+  static async getAdminUsers() {
     try {
       const adminUsers = await database.Users.findAll({
         where: { RoleId: 1 },
-        attributes: ["username", "email"]
+        attributes: ["username", "email"],
       });
 
       return adminUsers;
@@ -15,4 +15,4 @@ class ChannelUserService {
   }
 }
 
-export default ChannelUserService;
+export default RequestChannelService;

@@ -11,12 +11,11 @@ class LoginService {
             as: "Role",
             required: false,
             // Pass in the Feed attributes that you want to retrieve
-            attributes: ["role"]
-          }
-        ]
+            attributes: ["role"],
+          },
+        ],
       });
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
