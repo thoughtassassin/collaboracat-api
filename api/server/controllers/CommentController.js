@@ -36,6 +36,9 @@ class CommentController {
     const newComment = req.body;
     try {
       const createdComment = await CommentService.addComment(newComment);
+
+      util.setSuccess(201, "Comment Added!", createdComment);
+
       // get notified users
       let notifiedUsers = await CommentService.getNotifiedUsers(
         req.body.MessageId
@@ -69,10 +72,10 @@ class CommentController {
           subject: `${channel.name}: ${userFirstInitialLastName} - new comment`,
           html: `${link} ${req.body.content}`,
         };
+        console.log("Content to send: ", req.body.content);
+        console.log("Message to send: ", msg);
         await sgMail.send(msg);
       }
-
-      util.setSuccess(201, "Comment Added!", createdComment);
 
       return util.send(res);
     } catch (error) {
