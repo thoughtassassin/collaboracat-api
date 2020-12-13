@@ -145,7 +145,7 @@ describe("CommentController", () => {
     expect(sgMail.send).toHaveBeenCalledWith({
       to: ["johndoe@mail.com", "janedoe@mail.com"],
       from: "notifications@collaboracast.com",
-      subject: "bar: J. Doe - new comment",
+      subject: "bar: J. Doe (new comment)",
       text: "https://url.api/messages/5 foo",
       html: "https://url.api/messages/5 foo",
     });
