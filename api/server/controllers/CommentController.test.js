@@ -146,8 +146,8 @@ describe("CommentController", () => {
       to: ["johndoe@mail.com", "janedoe@mail.com"],
       from: "notifications@collaboracast.com",
       subject: "bar: J. Doe (new comment)",
-      text: "https://url.api/messages/5 foo",
-      html: "https://url.api/messages/5 foo",
+      text: "foo",
+      html: "foo",
     });
     expect(res.json).toHaveBeenCalledWith({
       data: {
