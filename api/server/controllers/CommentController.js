@@ -69,7 +69,8 @@ class CommentController {
         const msg = {
           to: notifiedUsers.map((notification) => notification.recipient),
           from: "notifications@collaboracast.com",
-          subject: `${channel.name}: ${userFirstInitialLastName} - new comment`,
+          subject: `${channel.name}: ${userFirstInitialLastName} (new comment)`,
+          text: `${link} ${req.body.content}`,
           html: `${link} ${req.body.content}`,
         };
         console.log("Content to send: ", req.body.content);
