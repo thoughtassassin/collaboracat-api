@@ -76,8 +76,10 @@ class MessageController {
           to: notifiedUsers.map((notification) => notification.recipient),
           from: "notifications@collaboracast.com",
           subject: `${channel.name}: ${userFirstInitialLastName}`,
+          text: `${req.body.content}`,
           html: `${req.body.content}`,
         };
+        console.log("Message notification: ", msg);
         await sgMail.send(msg);
       }
       return util.send(res);
