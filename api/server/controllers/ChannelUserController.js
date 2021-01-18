@@ -20,14 +20,14 @@ class ChannelUserController {
       if (!theChannelUsers) {
         util.setError(
           404,
-          `Cannot find ChannelUsers with the channel id ${id}`
+          `Cannot find ChannelUsers with the channel id ${channelid}`
         );
       } else {
         util.setSuccess(200, "Found Channel Users", theChannelUsers);
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }

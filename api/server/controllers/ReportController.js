@@ -21,11 +21,11 @@ class ReportController {
         endDate
       );
       if (Report.length > 0) {
-        const reportData = Report.map(report => ({
+        const reportData = Report.map((report) => ({
           Name: report.User.username,
           Channel: report.Channel.name,
           Date: report.createdAt,
-          Message: report.content
+          Message: report.content,
         }));
 
         let workbook = new excel.Workbook(); //creating workbook
@@ -36,7 +36,7 @@ class ReportController {
           { header: "Name", key: "Name", width: 30 },
           { header: "Channel", key: "Channel", width: 30 },
           { header: "Date", key: "Date", width: 30 },
-          { header: "Message", key: "Message", width: 30 }
+          { header: "Message", key: "Message", width: 30 },
         ];
 
         // Add Array Rows
@@ -50,8 +50,7 @@ class ReportController {
           "Content-Disposition",
           "attachment; filename=" + "customer.xlsx"
         );
-
-        return workbook.xlsx.write(res).then(function() {
+        return workbook.xlsx.write(res).then(function () {
           res.status(200).end();
         });
       } else {
@@ -59,7 +58,7 @@ class ReportController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -79,11 +78,11 @@ class ReportController {
         endDate
       );
       if (Report.length > 0) {
-        const reportData = Report.map(report => ({
+        const reportData = Report.map((report) => ({
           Name: report.User.username,
           Channel: report.Channel.name,
           Date: report.createdAt,
-          Message: report.content
+          Message: report.content,
         }));
 
         let workbook = new excel.Workbook(); //creating workbook
@@ -94,7 +93,7 @@ class ReportController {
           { header: "Name", key: "Name", width: 30 },
           { header: "Channel", key: "Channel", width: 30 },
           { header: "Date", key: "Date", width: 30 },
-          { header: "Message", key: "Message", width: 30 }
+          { header: "Message", key: "Message", width: 30 },
         ];
 
         // Add Array Rows
@@ -109,7 +108,7 @@ class ReportController {
           "attachment; filename=" + "channel.xlsx"
         );
 
-        return workbook.xlsx.write(res).then(function() {
+        return workbook.xlsx.write(res).then(function () {
           res.status(200).end();
         });
       } else {
@@ -117,7 +116,7 @@ class ReportController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }

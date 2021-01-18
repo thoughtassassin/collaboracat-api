@@ -18,7 +18,7 @@ class CommentController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -37,6 +37,8 @@ class CommentController {
     try {
       const createdComment = await CommentService.addComment(newComment);
 
+      util.setSuccess(201, "Comment Added!", createdComment);
+
       // get notified users
       let notifiedUsers = await CommentService.getNotifiedUsers(
         req.body.MessageId
@@ -45,6 +47,7 @@ class CommentController {
       // get username
       let user = await UserService.getUserById(req.body.UserId);
 
+      // TODO: pull name code into a function
       // get first name and last name of user sending message
       // if username doesn't have first and last just send username
       const usernameArray = user.username.trim().split(/\s/);
@@ -64,17 +67,20 @@ class CommentController {
 
       if (notifiedUsers.length > 0) {
         const msg = {
-          to: notifiedUsers.map(notification => notification.recipient),
+          to: notifiedUsers.map((notification) => notification.recipient),
           from: "notifications@collaboracast.com",
-          subject: `${channel.name}: ${userFirstInitialLastName} - new comment`,
-          html: `${link} ${req.body.content}`
+          subject: `${channel.name}: ${userFirstInitialLastName} (new comment)`,
+          text: `${req.body.content}`,
+          html: `${req.body.content}`,
         };
+        console.log("Content to send: ", req.body.content);
+        console.log("Message to send: ", msg);
         await sgMail.send(msg);
       }
-      util.setSuccess(201, "Comment Added!", createdComment);
+
       return util.send(res);
     } catch (error) {
-      util.setError(400, error.Comment);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -98,7 +104,7 @@ class CommentController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -121,7 +127,7 @@ class CommentController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -144,7 +150,7 @@ class CommentController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -170,7 +176,7 @@ class CommentController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }

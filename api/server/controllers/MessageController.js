@@ -20,7 +20,7 @@ class MessageController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -38,6 +38,7 @@ class MessageController {
     const newMessage = req.body;
     try {
       const createdMessage = await MessageService.addMessage(newMessage);
+
       util.setSuccess(201, "Message Added!", createdMessage);
 
       // get notified users
@@ -75,8 +76,10 @@ class MessageController {
           to: notifiedUsers.map((notification) => notification.recipient),
           from: "notifications@collaboracast.com",
           subject: `${channel.name}: ${userFirstInitialLastName}`,
-          html: `${link} ${req.body.content}`,
+          text: `${req.body.content}`,
+          html: `${req.body.content}`,
         };
+        console.log("Message notification: ", msg);
         await sgMail.send(msg);
       }
       return util.send(res);
@@ -105,7 +108,7 @@ class MessageController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -128,7 +131,7 @@ class MessageController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -151,7 +154,7 @@ class MessageController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -183,7 +186,7 @@ class MessageController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -212,7 +215,7 @@ class MessageController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -237,7 +240,7 @@ class MessageController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }

@@ -14,7 +14,7 @@ class NotificationController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }
@@ -39,7 +39,7 @@ class NotificationController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -64,7 +64,7 @@ class NotificationController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -88,7 +88,6 @@ class NotificationController {
   }
 
   static async updatedNotification(req, res) {
-    console.log("update notifications");
     const alteredNotification = req.body;
     const { id } = req.params;
     if (!Number(id)) {
@@ -107,7 +106,7 @@ class NotificationController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -130,7 +129,7 @@ class NotificationController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
@@ -155,7 +154,7 @@ class NotificationController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(400, error);
+      util.setError(400, error.message);
       return util.send(res);
     }
   }

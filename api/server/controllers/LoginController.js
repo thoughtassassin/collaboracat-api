@@ -25,26 +25,27 @@ class LoginController {
             id: user.dataValues.id,
             username: user.dataValues.username,
             email: user.dataValues.email,
-            Role: { role: user.dataValues.Role.role }
+            Role: { role: user.dataValues.Role.role },
           };
           var token = jwt.sign(
             JSON.parse(JSON.stringify(loggedInUser)),
             "nodeauthsecret",
             { expiresIn: 86400 * 30 }
           );
-          jwt.verify(token, "nodeauthsecret", function(err, data) {
-            console.log(err, data);
+          jwt.verify(token, "nodeauthsecret", function (err, data) {
+            if (err) {
+              throw new Error(err.message);
+            }
           });
           util.setSuccess(200, "Authenticated", token);
           return util.send(res);
         } else {
-          console.log("failed");
           util.setError(401, "Authentication failed. Wrong password.");
           return util.send(res);
         }
       });
     } catch (error) {
-      util.setError(404, error);
+      util.setError(404, error.message);
       return util.send(res);
     }
   }
