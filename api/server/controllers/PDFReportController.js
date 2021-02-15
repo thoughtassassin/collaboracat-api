@@ -61,7 +61,7 @@ class PDFReportController {
           lineGap: 40,
         });
 
-        addMessagesAndComments(document, reportData);
+        // addMessagesAndComments(document, reportData);
         document.end();
         return util.send(res);
       } else {
