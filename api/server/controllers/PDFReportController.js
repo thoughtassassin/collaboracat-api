@@ -31,21 +31,23 @@ class PDFReportController {
             time: moment(comment.createdAt).format("MMM DD, YYYY h:mm a"),
           }));
 
-        const reportData = Report.map((report) => ({
-          company: report.Channel.name,
-          employee: report.User.username,
-          office: report.User.Warehouse.name,
-          time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
-          message: report.content,
-          comments: formatComments(report.Comments),
-        }));
+        console.log("here in report: ", Report);
+
+        // const reportData = Report.map((report) => ({
+        //   company: report.Channel.name,
+        //   employee: report.User.username,
+        //   office: report.User.Warehouse.name,
+        //   time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
+        //   message: report.content,
+        //   comments: formatComments(report.Comments),
+        // }));
 
         const document = new PDFDocument({ bufferPages: true });
 
         let buffers = [];
         document.on("data", buffers.push.bind(buffers));
         document.on("end", () => {
-          // const pdfData = Buffer.concat(buffers);
+          const pdfData = Buffer.concat(buffers);
           // res
           //   .writeHead(200, {
           //     "Content-Length": Buffer.byteLength(pdfData),
@@ -53,7 +55,6 @@ class PDFReportController {
           //     "Content-disposition": "attachment;filename=report.pdf",
           //   })
           //   .end(pdfData);
-          console.log("is res defined: ", res);
         });
 
         document.font("Helvetica").fontSize(18).text("Don-Nan Report", {
