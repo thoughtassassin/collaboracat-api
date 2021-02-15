@@ -40,14 +40,14 @@ class PDFReportController {
           comments: formatComments(report.Comments),
         }));
 
-        console.log("here in report: ", reportData);
-
         const document = new PDFDocument({ bufferPages: true });
 
         let buffers = [];
         document.on("data", buffers.push.bind(buffers));
         document.on("end", () => {
           const pdfData = Buffer.concat(buffers);
+          console.log("here in report: ", reportData, res);
+
           // res
           //   .writeHead(200, {
           //     "Content-Length": Buffer.byteLength(pdfData),
