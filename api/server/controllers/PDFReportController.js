@@ -31,16 +31,16 @@ class PDFReportController {
             time: moment(comment.createdAt).format("MMM DD, YYYY h:mm a"),
           }));
 
-        console.log("here in report: ", Report);
+        const reportData = Report.map((report) => ({
+          company: report.Channel.name,
+          employee: report.User.username,
+          office: report.User.Warehouse.name,
+          time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
+          message: report.content,
+          comments: formatComments(report.Comments),
+        }));
 
-        // const reportData = Report.map((report) => ({
-        //   company: report.Channel.name,
-        //   employee: report.User.username,
-        //   office: report.User.Warehouse.name,
-        //   time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
-        //   message: report.content,
-        //   comments: formatComments(report.Comments),
-        // }));
+        console.log("here in report: ", reportData);
 
         const document = new PDFDocument({ bufferPages: true });
 
