@@ -46,15 +46,12 @@ class PDFReportController {
         document.on("data", buffers.push.bind(buffers));
         document.on("end", () => {
           const pdfData = Buffer.concat(buffers);
-          console.log("here in report: ", reportData, res);
-
-          // res
-          //   .writeHead(200, {
-          //     "Content-Length": Buffer.byteLength(pdfData),
-          //     "Content-Type": "application/pdf",
-          //     "Content-disposition": "attachment;filename=report.pdf",
-          //   })
-          //   .end(pdfData);
+          res.writeHead(200, {
+            "Content-Length": Buffer.byteLength(pdfData),
+            "Content-Type": "application/pdf",
+            "Content-disposition": "attachment;filename=report.pdf",
+          });
+          res.end(pdfData);
         });
 
         document.font("Helvetica").fontSize(18).text("Don-Nan Report", {
