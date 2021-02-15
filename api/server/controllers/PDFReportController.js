@@ -58,10 +58,8 @@ class PDFReportController {
           lineGap: 40,
         });
 
-        // addMessagesAndComments(document, reportData);
+        addMessagesAndComments(document, reportData);
         document.end();
-        util.setSuccess(200, "testing doc");
-        return util.send(res);
       } else {
         util.setSuccess(200, "No Report data available for those parameters");
       }
