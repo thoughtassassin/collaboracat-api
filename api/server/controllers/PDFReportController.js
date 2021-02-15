@@ -49,7 +49,6 @@ class PDFReportController {
           res
             .writeHead(200, {
               "Content-Length": Buffer.byteLength(pdfData),
-              "Access-Control-Allow-Origin": "*",
               "Content-Type": "application/pdf",
               "Content-disposition": "attachment;filename=report.pdf",
             })
@@ -103,6 +102,8 @@ class PDFReportController {
           comments: formatComments(report.Comments),
         }));
 
+        console.log(reportData);
+
         const document = new PDFDocument({ bufferPages: true });
 
         let buffers = [];
@@ -112,7 +113,6 @@ class PDFReportController {
           res
             .writeHead(200, {
               "Content-Length": Buffer.byteLength(pdfData),
-              "Access-Control-Allow-Origin": "*",
               "Content-Type": "application/pdf",
               "Content-disposition": "attachment;filename=report.pdf",
             })
