@@ -93,16 +93,14 @@ class PDFReportController {
             time: moment(comment.createdAt).format("MMM DD, YYYY h:mm a"),
           }));
 
-        const reportData = Report.map((report) => ({
-          company: report.Channel.name,
-          employee: report.User.username,
-          office: report.User.Warehouse.name,
-          time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
-          message: report.content,
-          comments: formatComments(report.Comments),
-        }));
-
-        console.log(reportData);
+        // const reportData = Report.map((report) => ({
+        //   company: report.Channel.name,
+        //   employee: report.User.username,
+        //   office: report.User.Warehouse.name,
+        //   time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
+        //   message: report.content,
+        //   comments: formatComments(report.Comments),
+        // }));
 
         const document = new PDFDocument({ bufferPages: true });
 
@@ -123,7 +121,7 @@ class PDFReportController {
           lineGap: 40,
         });
 
-        addMessagesAndComments(document, reportData);
+        // addMessagesAndComments(document, reportData);
         document.end();
       } else {
         util.setSuccess(200, "No Report data available for those parameters");
