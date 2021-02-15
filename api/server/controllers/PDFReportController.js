@@ -45,14 +45,15 @@ class PDFReportController {
         let buffers = [];
         document.on("data", buffers.push.bind(buffers));
         document.on("end", () => {
-          const pdfData = Buffer.concat(buffers);
-          res
-            .writeHead(200, {
-              "Content-Length": Buffer.byteLength(pdfData),
-              "Content-Type": "application/pdf",
-              "Content-disposition": "attachment;filename=report.pdf",
-            })
-            .end(pdfData);
+          // const pdfData = Buffer.concat(buffers);
+          // res
+          //   .writeHead(200, {
+          //     "Content-Length": Buffer.byteLength(pdfData),
+          //     "Content-Type": "application/pdf",
+          //     "Content-disposition": "attachment;filename=report.pdf",
+          //   })
+          //   .end(pdfData);
+          console.log("is res defined: ", res);
         });
 
         document.font("Helvetica").fontSize(18).text("Don-Nan Report", {
@@ -61,6 +62,7 @@ class PDFReportController {
 
         addMessagesAndComments(document, reportData);
         document.end();
+        return util.send(res);
       } else {
         util.setSuccess(200, "No Report data available for those parameters");
       }
@@ -93,14 +95,14 @@ class PDFReportController {
             time: moment(comment.createdAt).format("MMM DD, YYYY h:mm a"),
           }));
 
-        // const reportData = Report.map((report) => ({
-        //   company: report.Channel.name,
-        //   employee: report.User.username,
-        //   office: report.User.Warehouse.name,
-        //   time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
-        //   message: report.content,
-        //   comments: formatComments(report.Comments),
-        // }));
+        const reportData = Report.map((report) => ({
+          company: report.Channel.name,
+          employee: report.User.username,
+          office: report.User.Warehouse.name,
+          time: moment(report.createdAt).format("MMM DD, YYYY h:mm a"),
+          message: report.content,
+          comments: formatComments(report.Comments),
+        }));
 
         const document = new PDFDocument({ bufferPages: true });
 
@@ -121,7 +123,7 @@ class PDFReportController {
           lineGap: 40,
         });
 
-        // addMessagesAndComments(document, reportData);
+        addMessagesAndComments(document, reportData);
         document.end();
       } else {
         util.setSuccess(200, "No Report data available for those parameters");
