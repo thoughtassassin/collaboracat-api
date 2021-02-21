@@ -4,4 +4,5 @@ export const res = {
   json: jest.fn(() => res),
   setHeader: jest.fn(),
   end: jest.fn(),
+  writeHead: jest.fn(),
 };

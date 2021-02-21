@@ -62,6 +62,7 @@ class PDFReportController {
         document.end();
       } else {
         util.setSuccess(200, "No Report data available for those parameters");
+        return util.send(res);
       }
     } catch (error) {
       util.setError(400, error.message);
@@ -83,6 +84,7 @@ class PDFReportController {
         beginDate,
         endDate
       );
+
       if (Report.length > 0) {
         const formatComments = (comments) =>
           comments.map((comment) => ({
@@ -123,6 +125,7 @@ class PDFReportController {
         document.end();
       } else {
         util.setSuccess(200, "No Report data available for those parameters");
+        return util.send(res);
       }
     } catch (error) {
       util.setError(400, error.message);
