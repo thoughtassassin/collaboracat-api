@@ -19,6 +19,10 @@ module.exports = {
     password: process.env.DB_PASS,
     host: process.env.DB_HOST,
     dialect: "postgres",
+    ssl: true,
+    dialectOptions: {
+      ssl: { require: true },
+    },
   },
 
   test: {
